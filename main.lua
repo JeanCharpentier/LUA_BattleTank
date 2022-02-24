@@ -32,9 +32,7 @@ function love.draw()
 end
 
 function love.keypressed(key)
-    if key == "space" then
-        myTank.creerTir(1)
-    end
+
 end
 
 function love.mousepressed(x, y, button, istouch)
