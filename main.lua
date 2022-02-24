@@ -10,6 +10,7 @@ io.stdout:setvbuf("no")
 --------------------------------------------------------------------------
 
 local myGame = require("game")
+local myTank = require("tank")
 
 function love.load()
     love.window.setMode(1280,720)
@@ -18,13 +19,16 @@ function love.load()
     hauteur = love.graphics.getHeight()
 
     myGame.Load()
+    myTank.Load()
 end
 
 function love.update(dt)
+    myTank.Update(dt)
 end
 
 function love.draw()
     myGame.Draw()
+    myTank.Draw()
 end
 
 function love.keypressed(key)
