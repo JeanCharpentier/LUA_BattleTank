@@ -13,7 +13,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    print("Hello World!")
+    love.graphics.print("hello world", 10, 10)
 end
 
 function love.keypressed(key)
