@@ -1,78 +1,87 @@
 require("system")
-local Tank = {}
+local tank = {}
+local sprites = {}
+local imgTir = {"images/bulletRed2.png","images/bulletsDouble.png"}
+local tirs = {}
+
 local MAX_SPEED = 3
 
 local mouseX = 0
 local mouseY = 0
 
-function Tank.Load()
-    Tank = {x=largeur/2,y=hauteur/2,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=2}
-    Tourelle = {x=Tank.x,y=Tank.y,angle=0,imgBase=love.graphics.newImage("images/specialBarrel1.png")}
+function tank.Load()
+    tank = {x=largeur/2,y=hauteur/2,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=2}
+    tourelle = {x=tank.x,y=tank.y,angle=0,imgBase=love.graphics.newImage("images/specialBarrel1.png")}
 end
 
-function Tank.Update(dt)
+function tank.Update(dt)
 
     ---- CONTROLLES ----
-    --[[if love.keyboard.isDown("down") then
-        Tank.vy = Tank.vy + (Tank.s * dt)
-        Tank.y = Tank.y + limit(Tank.vy,0,MAX_SPEED)
-    end
-    if love.keyboard.isDown("up") then
-        Tank.vy = Tank.vy + (Tank.s * dt)
-        Tank.y = Tank.y - limit(Tank.vy,0,MAX_SPEED)
-    end
-    if love.keyboard.isDown("left") then
-        Tank.vx = Tank.vx + (Tank.s * dt)
-        Tank.x = Tank.x - limit(Tank.vx,0,MAX_SPEED)
-    end
-    if love.keyboard.isDown("right") then
-        Tank.vx = Tank.vx + (Tank.s * dt)
-        Tank.x = Tank.x + limit(Tank.vx,0,MAX_SPEED)
-    end
-    ---- Reset VX et VY si pas d'inputs ----
-    if (not love.keyboard.isDown("right")) and (not love.keyboard.isDown("left")) then
-        Tank.vx = 0
-    end
-    if (not love.keyboard.isDown("up")) and (not love.keyboard.isDown("down")) then
-        Tank.vy = 0
-    end]]--
-
     if love.keyboard.isDown("s") then
-        local vx = 20 * math.cos(Tank.angle)
-        local vy = 20 * math.sin(Tank.angle)
+        local vx = 20 * math.cos(tank.angle)
+        local vy = 20 * math.sin(tank.angle)
 
-        Tank.x = Tank.x - (vx * dt)
-        Tank.y = Tank.y - (vy * dt)
+        tank.x = tank.x - (vx * dt)
+        tank.y = tank.y - (vy * dt)
     end
     if love.keyboard.isDown("z") then
-        local vx = 20 * math.cos(Tank.angle)
-        local vy = 20 * math.sin(Tank.angle)
+        local vx = 20 * math.cos(tank.angle)
+        local vy = 20 * math.sin(tank.angle)
 
-        Tank.x = Tank.x + (vx * dt)
-        Tank.y = Tank.y + (vy * dt)
+        tank.x = tank.x + (vx * dt)
+        tank.y = tank.y + (vy * dt)
     end
     if love.keyboard.isDown("q") then
-        Tank.angle = Tank.angle - (1 * dt)
+        tank.angle = tank.angle - (1 * dt)
     end
     if love.keyboard.isDown("d") then
-        Tank.angle = Tank.angle + (1 * dt)
+        tank.angle = tank.angle + (1 * dt)
     end
 
-    ---- Rotation Tourelle ----
+    ---- Rotation tourelle ----
     mouseX = love.mouse.getX()
     mouseY = love.mouse.getY()
 
-    Tourelle.angle = math.atan2(mouseY - Tourelle.y, mouseX - Tourelle.x)
+    tourelle.angle = math.atan2(mouseY - tourelle.y, mouseX - tourelle.x)
+
+    ---- Mouvements Boulets ----
+    for i=1,#tirs,1 do
+        monBoulet = tirs[i]
+        local vx = monBoulet.speed * math.cos(monBoulet.angle)
+        local vy = monBoulet.speed * math.sin(monBoulet.angle)
+        monBoulet.x = tirs[i].x + (vx * dt)
+        monBoulet.y = tirs[i].y + (vy * dt)
+    end
     
 end
 
-function Tank.Draw()
-    love.graphics.draw(Tank.imgBase,Tank.x,Tank.y,Tank.angle,1,1,Tank.imgBase:getWidth()/2,Tank.imgBase:getHeight()/2)
-    love.graphics.draw(Tourelle.imgBase,Tank.x,Tank.y,Tourelle.angle,1,1,Tourelle.imgBase:getWidth()/5,Tourelle.imgBase:getHeight()/2)
+function tank.Draw()
+    love.graphics.draw(tank.imgBase,tank.x,tank.y,tank.angle,1,1,tank.imgBase:getWidth()/2,tank.imgBase:getHeight()/2) -- Affichage Tank
+    for i=1,#tirs,1 do
+        love.graphics.draw(tirs[i].imgBase,tirs[i].x,tirs[i].y,tirs[i].angle,1,1,tirs[i].imgBase:getWidth()/2,tirs[i].imgBase:getHeight()/2) -- Affichages boulets
+    end
+    love.graphics.draw(tourelle.imgBase,tank.x,tank.y,tourelle.angle,1,1,tourelle.imgBase:getWidth()/5,tourelle.imgBase:getHeight()/2) -- Affichage Tourelle
+
     --- DEBUG ---
-    love.graphics.print("VALUE:"..tostring(mouseX))
+    love.graphics.print("VALUE:"..tostring(#tirs))
+end
+
+function tank.creerTir(type)
+    local boulet = {}
+    local ang = 0
+    local s = 0
+    if type == 1 then
+        ang = tourelle.angle
+        s = 100
+    elseif type == 2 then
+        ang = tank.angle
+        s = 500
+    end
+    boulet = {x=tank.x,y=tank.y,imgBase=love.graphics.newImage(imgTir[type]),angle=ang,type=type,speed=s}
+    table.insert(tirs,boulet)
+    return boulet
 end
 
 
 -------- RETURN ----------
-return Tank
+return tank
