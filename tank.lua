@@ -1,13 +1,23 @@
 require("system")
+
+---- Tank -----
 local tank = {}
-local sprites = {}
+
+---- Boulets et Tirs ----
 local imgTir = {"images/bulletRed2.png","images/bulletsDouble.png"}
 local tirs = {}
 
-local MAX_SPEED = 3
+---- Reload ----
+local timeReload = 10
+local canShoot = true
 
+
+---- Curseur Souris ----
 local mouseX = 0
 local mouseY = 0
+
+
+---- Fonctions ----
 
 function tank.Load()
     tank = {x=largeur/2,y=hauteur/2,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=2}
@@ -16,6 +26,8 @@ end
 
 function tank.Update(dt)
 
+    ---- Timer Reload ----
+    
     ---- CONTROLLES ----
     if love.keyboard.isDown("s") then
         local vx = 20 * math.cos(tank.angle)
@@ -66,7 +78,7 @@ function tank.Draw()
     love.graphics.print("VALUE:"..tostring(#tirs))
 end
 
-function tank.creerTir(type)
+function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a la liste "tirs"
     local boulet = {}
     local ang = 0
     local s = 0
