@@ -8,6 +8,9 @@ local MAX_SPEED = 80
 local imgTir = {"images/bulletsDouble.png","images/bulletRed2.png"}
 local tirs = {}
 
+---- Explosions ----
+local explos = {}
+
 ---- Reload ----
 local timeReload = 10
 local canShoot = true
@@ -68,13 +71,16 @@ function tank.Update(dt)
         local monBoulet = tirs[i]
         local vx = monBoulet.speed * math.cos(monBoulet.angle)
         local vy = monBoulet.speed * math.sin(monBoulet.angle)
-        ---- Update boulets ----
         monBoulet.x = tirs[i].x + (vx * dt)
         monBoulet.y = tirs[i].y + (vy * dt)
+
+        ---- Collisions ----
         for n=#ennemis,1,-1 do
             local monEnnemi = ennemis[n]
             if math.dist(monBoulet.x, monBoulet.y, monEnnemi.x, monEnnemi.y) < (monEnnemi.imgBase:getWidth()/2) then
                 print("Collision !")
+                table.insert(explos,Explosion(monBoulet.x,monBoulet.y))
+                print(#explos)
                 table.remove(ennemis, n)
                 table.remove(tirs, i)
             end
@@ -83,11 +89,18 @@ function tank.Update(dt)
 end
 
 function tank.Draw()
+    ----- Affichage Tank, Tourelle et tirs ----
     love.graphics.draw(tank.imgBase,tank.x,tank.y,tank.angle,1,1,tank.imgBase:getWidth()/2,tank.imgBase:getHeight()/2) -- Affichage Tank
     for i=1,#tirs,1 do
         love.graphics.draw(tirs[i].imgBase,tirs[i].x,tirs[i].y,tirs[i].angle,1,1,tirs[i].imgBase:getWidth()/2,tirs[i].imgBase:getHeight()/2) -- Affichages boulets
     end
     love.graphics.draw(tourelle.imgBase,tank.x,tank.y,tourelle.angle,1,1,tourelle.imgBase:getWidth()/5,tourelle.imgBase:getHeight()/2) -- Affichage Tourelle
+    
+    ---- Affichage Explosions ----
+    for i=1,#explos,1 do
+        local imgExplo = love.graphics.newImage(explos[i]["frames"][1])
+        love.graphics.draw(imgExplo, explos[i].x, explos[i].y,explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
+    end
 
     --- DEBUG ---
     love.graphics.print("VALUE:"..tostring(#tirs))
