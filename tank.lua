@@ -4,7 +4,7 @@ require("system")
 local tank = {}
 
 ---- Boulets et Tirs ----
-local imgTir = {"images/bulletRed2.png","images/bulletsDouble.png"}
+local imgTir = {"images/bulletsDouble.png","images/bulletRed2.png"}
 local tirs = {}
 
 ---- Reload ----
@@ -82,10 +82,10 @@ function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a l
     local boulet = {}
     local ang = 0
     local s = 0
-    if type == 1 then
+    if type == 2 then
         ang = tourelle.angle
         s = 100
-    elseif type == 2 then
+    elseif type == 1 then
         ang = tank.angle
         s = 500
     end

@@ -37,9 +37,9 @@ end
 
 function love.mousepressed(x, y, button, istouch)
     if button == 1 then -- Mitrailleuse
-        myTank.creerTir(2)
+        myTank.creerTir(1)
     end
     if button == 2 then -- Canon
-        myTank.creerTir(1)
+        myTank.creerTir(2)
     end
  end
