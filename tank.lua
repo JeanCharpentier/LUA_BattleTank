@@ -21,9 +21,6 @@ local canShoot = true
 local mouseX = 0
 local mouseY = 0
 
----- Liste ennemis ----
-
-
 ---- Fonctions ----
 
 function tank.Load()
@@ -32,8 +29,6 @@ function tank.Load()
 end
 
 function tank.Update(dt)
-
-    ---- Timer Reload ----
     
     ---- CONTROLLES ----
     if love.keyboard.isDown("s") then
@@ -79,9 +74,7 @@ function tank.Update(dt)
         for n=#ennemis,1,-1 do
             local monEnnemi = ennemis[n]
             if math.dist(monBoulet.x, monBoulet.y, monEnnemi.x, monEnnemi.y) < (monEnnemi.imgBase:getWidth()/2) then
-                print("Collision !")
                 table.insert(explos,Explosion(monBoulet.x,monBoulet.y))
-                print(#explos)
                 table.remove(ennemis, n)
                 table.remove(tirs, i)
             end
@@ -93,7 +86,6 @@ function tank.Update(dt)
     for n=#explos,1,-1 do
         local frame = explos[n].frames
         local myTime = explos[n].time + (10 * dt)
-        --local modTime = myTime % 1
         explos[n].time = myTime
         if explos[n].time <= #exploSprites then
             explos[n].frames = math.floor(explos[n].time)
@@ -118,7 +110,7 @@ function tank.Draw()
     end
 
     --- DEBUG ---
-    love.graphics.print("VALUE:"..tostring(#tirs))
+    --love.graphics.print("VALUE:"..tostring(#tirs))
 end
 
 function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a la liste "tirs"

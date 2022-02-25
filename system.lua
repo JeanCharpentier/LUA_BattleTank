@@ -1,3 +1,5 @@
+defaultFont = love.graphics.newFont("fonts/kenvector_future.ttf",40)
+
 function limit(v,c1,c2) -- Pour limiter une valeu /!\ C'est pas un Clamp !
     local value = v
     if value < c1 then
@@ -12,12 +14,12 @@ function math.dist(x1,y1, x2,y2) -- Collision par distance !
     return ((x2-x1)^2+(y2-y1)^2)^0.5
 end
 
-function Explosion(lx,ly)
+function Explosion(lx,ly) -- Créer une explosion
     local explo = {}
     explo.x = lx
     explo.y = ly
     explo.frames = 1
-    explo.angle = math.random(0,6)
+    explo.angle = math.random(0,6) -- Random entre 0 et presque 2Pi
     explo.time = 1
     return explo
 end

@@ -1,9 +1,16 @@
+require("system")
+
+
 local Game = {}
 
 local MAP_WIDTH = 20
 local MAP_HEIGHT = 11
 local TILE_WIDTH = 64
 local TILE_HEIGHT = 64
+
+---- Screen Shake ----
+local dx = 0
+local dy = 0
 
 Game.Map = {}
 Game.Map =  {
@@ -42,7 +49,16 @@ function Game.Load()
     print("Game:Textures Loading...")
 end
 
+function Game.Update(dt)
+
+end
+
 function Game.Draw()
+
+    ---- Screen Shake ----
+
+    love.graphics.translate(dx,dy)
+
     ----- Affichge Map ------
     local c,l
 
@@ -64,7 +80,7 @@ function Game.Draw()
     local lig = math.floor(y / TILE_HEIGHT) + 1
     if col>0 and col<=MAP_WIDTH and lig>0 and lig<=MAP_HEIGHT then
         local id = Game.Map[lig][col]
-        love.graphics.print("ID:"..tostring(id),10,10)
+        --love.graphics.print("ID:"..tostring(id),10,10)
     end
 end
 
