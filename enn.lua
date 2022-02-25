@@ -26,7 +26,7 @@ end
 
 function enn.Update(dt)
     tank = myTank.getPos()
-    for i=MAX_EN,1,-1 do
+    for i=#ennListe,1,-1 do
         local enn = ennListe[i]
         enn.angle = math.atan2(tank.y - enn.y, tank.x - enn.x)
         local vx = 20 * math.cos(enn.angle)
@@ -39,7 +39,7 @@ function enn.Update(dt)
 end
 
 function enn.Draw()
-    for i=1,MAX_EN,1 do
+    for i=#ennListe,1,-1 do
         local enn = ennListe[i]
         love.graphics.draw(enn.imgBase,enn.x,enn.y,enn.angle,1,1,enn.imgBase:getWidth()/2,enn.imgBase:getWidth()/2)
     end
@@ -51,6 +51,9 @@ function enn.getListe()
 end
 
 
+function enn.rmEnnemi(ln)
+    table.remove(ennListe,ln)
+end
 ------- RETURN ----------
 
 return enn

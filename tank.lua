@@ -68,20 +68,18 @@ function tank.Update(dt)
         local monBoulet = tirs[i]
         local vx = monBoulet.speed * math.cos(monBoulet.angle)
         local vy = monBoulet.speed * math.sin(monBoulet.angle)
+        ---- Update boulets ----
+        monBoulet.x = tirs[i].x + (vx * dt)
+        monBoulet.y = tirs[i].y + (vy * dt)
         for n=#ennemis,1,-1 do
             local monEnnemi = ennemis[n]
             if math.dist(monBoulet.x, monBoulet.y, monEnnemi.x, monEnnemi.y) < (monEnnemi.imgBase:getWidth()/2) then
                 print("Collision !")
                 table.remove(ennemis, n)
-                --table.remove(monBoulet, i)
+                table.remove(tirs, i)
             end
         end
-
-        ---- Update boulets ----
-        monBoulet.x = tirs[i].x + (vx * dt)
-        monBoulet.y = tirs[i].y + (vy * dt)
-    end
-    
+    end    
 end
 
 function tank.Draw()
