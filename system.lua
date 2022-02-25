@@ -12,13 +12,12 @@ function math.dist(x1,y1, x2,y2) -- Collision par distance !
     return ((x2-x1)^2+(y2-y1)^2)^0.5
 end
 
-
-local exploSprites = {"images/explo/explosion1.png","images/explo/explosion2.png","images/explo/explosion3.png","images/explo/explosion4.png","images/explo/explosion5.png"}
 function Explosion(lx,ly)
     local explo = {}
     explo.x = lx
     explo.y = ly
-    explo.frames = exploSprites
+    explo.frames = 1
     explo.angle = math.random(0,6)
+    explo.time = 1
     return explo
 end

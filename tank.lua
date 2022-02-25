@@ -10,6 +10,7 @@ local tirs = {}
 
 ---- Explosions ----
 local explos = {}
+local exploSprites = {"images/explo/explosion1.png","images/explo/explosion2.png","images/explo/explosion3.png","images/explo/explosion4.png","images/explo/explosion5.png"}
 
 ---- Reload ----
 local timeReload = 10
@@ -85,7 +86,21 @@ function tank.Update(dt)
                 table.remove(tirs, i)
             end
         end
-    end    
+    end
+    
+    ---- Animations Explosions ----
+
+    for n=#explos,1,-1 do
+        local frame = explos[n].frames
+        local myTime = explos[n].time + (10 * dt)
+        --local modTime = myTime % 1
+        explos[n].time = myTime
+        if explos[n].time <= #exploSprites then
+            explos[n].frames = math.floor(explos[n].time)
+        else
+            table.remove(explos,n)
+        end
+    end
 end
 
 function tank.Draw()
@@ -98,7 +113,7 @@ function tank.Draw()
     
     ---- Affichage Explosions ----
     for i=1,#explos,1 do
-        local imgExplo = love.graphics.newImage(explos[i]["frames"][1])
+        local imgExplo = love.graphics.newImage(exploSprites[explos[i].frames])
         love.graphics.draw(imgExplo, explos[i].x, explos[i].y,explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
     end
 
