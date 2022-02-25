@@ -3,7 +3,7 @@ require("system")
 
 ---------------Gestion des ennemis -------------
 local enn = {}
-local MAX_EN = 5
+local MAX_EN = 6
 local ennListe = {}
 local ennImg = love.graphics.newImage("images/tank_blue.png")
 
@@ -26,10 +26,9 @@ end
 
 function enn.Update(dt)
     tank = myTank.getPos()
-    for i=1,MAX_EN,1 do
+    for i=MAX_EN,1,-1 do
         local enn = ennListe[i]
         enn.angle = math.atan2(tank.y - enn.y, tank.x - enn.x)
-        
         local vx = 20 * math.cos(enn.angle)
         local vy = 20 * math.sin(enn.angle)
         enn.x = enn.x + (vx * dt)
@@ -46,6 +45,10 @@ function enn.Draw()
     end
 end
 
+
+function enn.getListe()
+    return ennListe
+end
 
 
 ------- RETURN ----------

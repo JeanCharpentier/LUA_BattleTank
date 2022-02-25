@@ -17,6 +17,8 @@ local canShoot = true
 local mouseX = 0
 local mouseY = 0
 
+---- Liste ennemis ----
+
 
 ---- Fonctions ----
 
@@ -58,10 +60,24 @@ function tank.Update(dt)
     tourelle.angle = math.atan2(mouseY - tourelle.y, mouseX - tourelle.x) -- Angle de la tourelle vers le curseur de la souris
 
     ---- Mouvements Boulets ----
-    for i=1,#tirs,1 do
-        monBoulet = tirs[i]
+    local ennListe = require("enn")
+    local ennemis = {}
+    ennemis = ennListe.getListe()
+
+    for i=#tirs,1,-1 do
+        local monBoulet = tirs[i]
         local vx = monBoulet.speed * math.cos(monBoulet.angle)
         local vy = monBoulet.speed * math.sin(monBoulet.angle)
+        for n=#ennemis,1,-1 do
+            local monEnnemi = ennemis[n]
+            if math.dist(monBoulet.x, monBoulet.y, monEnnemi.x, monEnnemi.y) < (monEnnemi.imgBase:getWidth()/2) then
+                print("Collision !")
+                table.remove(ennemis, n)
+                --table.remove(monBoulet, i)
+            end
+        end
+
+        ---- Update boulets ----
         monBoulet.x = tirs[i].x + (vx * dt)
         monBoulet.y = tirs[i].y + (vy * dt)
     end

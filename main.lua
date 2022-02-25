@@ -8,6 +8,7 @@ io.stdout:setvbuf("no")
 
 
 --------------------------------------------------------------------------
+require("system") -- "Librairie" perso
 
 local myGame = require("game")
 local myTank = require("tank")

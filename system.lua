@@ -1,4 +1,4 @@
-function limit(v,c1,c2)
+function limit(v,c1,c2) -- Pour limiter une valeu /!\ C'est pas un Clamp !
     local value = v
     if value < c1 then
         value = c1
@@ -6,4 +6,8 @@ function limit(v,c1,c2)
         value = c2
     end
     return value
+end
+
+function math.dist(x1,y1, x2,y2) -- Collision par distance !
+    return ((x2-x1)^2+(y2-y1)^2)^0.5
 end
