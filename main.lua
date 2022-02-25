@@ -11,6 +11,7 @@ io.stdout:setvbuf("no")
 
 local myGame = require("game")
 local myTank = require("tank")
+local myEnn = require("enn")
 
 function love.load()
     love.window.setMode(1280,720)
@@ -18,17 +19,22 @@ function love.load()
     largeur = love.graphics.getWidth()
     hauteur = love.graphics.getHeight()
 
+    math.randomseed(os.time()) -- Reset de la graine du Random
+
     myGame.Load()
     myTank.Load()
+    myEnn.Load()
 end
 
 function love.update(dt)
     myTank.Update(dt)
+    myEnn.Update(dt)
 end
 
 function love.draw()
     myGame.Draw()
     myTank.Draw()
+    myEnn.Draw()
 end
 
 function love.keypressed(key)

@@ -2,6 +2,7 @@ require("system")
 
 ---- Tank -----
 local tank = {}
+local MAX_SPEED = 80
 
 ---- Boulets et Tirs ----
 local imgTir = {"images/bulletsDouble.png","images/bulletRed2.png"}
@@ -20,7 +21,7 @@ local mouseY = 0
 ---- Fonctions ----
 
 function tank.Load()
-    tank = {x=largeur/2,y=hauteur/2,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=2}
+    tank = {x=largeur/4,y=hauteur/2,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=2}
     tourelle = {x=tank.x,y=tank.y,angle=0,imgBase=love.graphics.newImage("images/specialBarrel1.png")}
 end
 
@@ -30,15 +31,15 @@ function tank.Update(dt)
     
     ---- CONTROLLES ----
     if love.keyboard.isDown("s") then
-        local vx = 20 * math.cos(tank.angle)
-        local vy = 20 * math.sin(tank.angle)
+        local vx = MAX_SPEED * math.cos(tank.angle)
+        local vy = MAX_SPEED * math.sin(tank.angle)
 
         tank.x = tank.x - (vx * dt)
         tank.y = tank.y - (vy * dt)
     end
     if love.keyboard.isDown("z") then
-        local vx = 20 * math.cos(tank.angle)
-        local vy = 20 * math.sin(tank.angle)
+        local vx = MAX_SPEED * math.cos(tank.angle)
+        local vy = MAX_SPEED * math.sin(tank.angle)
 
         tank.x = tank.x + (vx * dt)
         tank.y = tank.y + (vy * dt)
@@ -54,7 +55,7 @@ function tank.Update(dt)
     mouseX = love.mouse.getX()
     mouseY = love.mouse.getY()
 
-    tourelle.angle = math.atan2(mouseY - tourelle.y, mouseX - tourelle.x)
+    tourelle.angle = math.atan2(mouseY - tourelle.y, mouseX - tourelle.x) -- Angle de la tourelle vers le curseur de la souris
 
     ---- Mouvements Boulets ----
     for i=1,#tirs,1 do
@@ -94,6 +95,10 @@ function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a l
     return boulet
 end
 
+function tank.getPos()
+    local tankPos = {x=tank.x,y=tank.y}
+    return tankPos
+end
 
 -------- RETURN ----------
 return tank
