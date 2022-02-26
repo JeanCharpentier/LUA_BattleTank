@@ -1,3 +1,5 @@
+local PI = math.pi
+
 defaultFont = love.graphics.newFont("fonts/kenvector_future.ttf",40)
 
 function limit(v,c1,c2) -- Pour limiter une valeu /!\ C'est pas un Clamp !
@@ -19,7 +21,7 @@ function Explosion(lx,ly) -- Créer une explosion
     explo.x = lx
     explo.y = ly
     explo.frames = 1
-    explo.angle = math.random(0,6) -- Random entre 0 et presque 2Pi
+    explo.angle = math.random(0,2*PI)
     explo.time = 1
     return explo
 end

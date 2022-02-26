@@ -68,7 +68,7 @@ function tank.Update(dt)
     mouseX = love.mouse.getX()
     mouseY = love.mouse.getY()
 
-    tourelle.angle = math.atan2(mouseY - tourelle.y, mouseX - tourelle.x) -- Angle de la tourelle vers le curseur de la souris
+    tourelle.angle = math.atan2(mouseY - tank.y, mouseX - tank.x) -- Angle de la tourelle vers le curseur de la souris
 
     ---- Mouvements Boulets ----
     local ennListe = require("enn")
@@ -109,7 +109,7 @@ function tank.Update(dt)
     ---- Boost et Power ----
 
     if tank.power > 0 and isBoost then
-        tank.power = tank.power - 60 * dt
+        tank.power = tank.power - (60 * dt)
     elseif tank.power <= 0 then
         tank.s = MAX_SPEED
         isBoost = false
@@ -142,6 +142,8 @@ function tank.Draw()
 
     ---- Affichage HUD ----
     love.graphics.draw(mainHUD,0,0)
+
+    ---- Affichage BOOST ----
     love.graphics.rectangle("fill", 100, hauteur - (reloadingMask:getHeight() + 10), (tank.power * reloadingMask:getWidth()) / 100, reloadingMask:getHeight())
     love.graphics.draw(reloadingMask, 100, hauteur - (reloadingMask:getHeight() + 10))
 
