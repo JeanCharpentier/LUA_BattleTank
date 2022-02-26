@@ -3,6 +3,9 @@ require("system")
 ---- Tank -----
 local tank = {}
 local MAX_SPEED = 80
+local BOOST = 3
+local canBoost = true
+local isBoost = false
 
 ---- Boulets et Tirs ----
 local imgTir = {"images/bulletsDouble.png","images/bulletRed2.png"}
@@ -21,26 +24,35 @@ local canShoot = true
 local mouseX = 0
 local mouseY = 0
 
+
+local mainHUD = love.graphics.newImage("images/UI/mainHUD.png")
+local reloadingMask = love.graphics.newImage("images/UI/blue_button13.png")
+
 ---- Fonctions ----
 
 function tank.Load()
-    tank = {x=largeur/4,y=hauteur/2,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=2}
+
+    ---- Chargement et création du tank + tourelle ----
+    tank = {x=largeur/4,y=hauteur/2,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100}
     tourelle = {x=tank.x,y=tank.y,angle=0,imgBase=love.graphics.newImage("images/specialBarrel1.png")}
+
+    ---- Chargement images HUD ----
+
 end
 
 function tank.Update(dt)
     
     ---- CONTROLLES ----
     if love.keyboard.isDown("s") then
-        local vx = MAX_SPEED * math.cos(tank.angle)
-        local vy = MAX_SPEED * math.sin(tank.angle)
+        local vx = tank.s * math.cos(tank.angle)
+        local vy = tank.s * math.sin(tank.angle)
 
         tank.x = tank.x - (vx * dt)
         tank.y = tank.y - (vy * dt)
     end
     if love.keyboard.isDown("z") then
-        local vx = MAX_SPEED * math.cos(tank.angle)
-        local vy = MAX_SPEED * math.sin(tank.angle)
+        local vx = tank.s * math.cos(tank.angle)
+        local vy = tank.s * math.sin(tank.angle)
 
         tank.x = tank.x + (vx * dt)
         tank.y = tank.y + (vy * dt)
@@ -93,7 +105,25 @@ function tank.Update(dt)
             table.remove(explos,n)
         end
     end
+
+    ---- Boost et Power ----
+
+    if tank.power > 0 and isBoost then
+        tank.power = tank.power - 60 * dt
+    elseif tank.power <= 0 then
+        tank.s = MAX_SPEED
+        isBoost = false
+        canBoost = false
+    end
+    if tank.power < 100 and (not isBoost) then
+        tank.power = tank.power + (10 * dt)
+    end
+    if tank.power >= 100 then
+        canBoost = true
+    end
 end
+
+
 
 function tank.Draw()
     ----- Affichage Tank, Tourelle et tirs ----
@@ -109,8 +139,15 @@ function tank.Draw()
         love.graphics.draw(imgExplo, explos[i].x, explos[i].y,explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
     end
 
+
+    ---- Affichage HUD ----
+    love.graphics.draw(mainHUD,0,0)
+    love.graphics.rectangle("fill", 100, hauteur - (reloadingMask:getHeight() + 10), (tank.power * reloadingMask:getWidth()) / 100, reloadingMask:getHeight())
+    love.graphics.draw(reloadingMask, 100, hauteur - (reloadingMask:getHeight() + 10))
+
+
     --- DEBUG ---
-    --love.graphics.print("VALUE:"..tostring(#tirs))
+    love.graphics.print("VALUE:"..tostring(tank.power))
 end
 
 function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a la liste "tirs"
@@ -129,9 +166,17 @@ function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a l
     return boulet
 end
 
-function tank.getPos()
+function tank.getPos() -- Renvoi la position du Tank aux ennemis
     local tankPos = {x=tank.x,y=tank.y}
     return tankPos
+end
+
+function tank.boost()
+    if canBoost then
+        tank.s = MAX_SPEED * BOOST
+        canBoost = false
+        isBoost = true
+    end
 end
 
 -------- RETURN ----------
