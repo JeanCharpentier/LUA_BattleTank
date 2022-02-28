@@ -6,6 +6,7 @@ local MAX_SPEED = 80
 local BOOST = 3
 local canBoost = true
 local isBoost = false
+local tourelle = {}
 
 ---- Boulets et Tirs ----
 local imgTir = {"images/bulletsDouble.png","images/bulletRed2.png"}
@@ -15,18 +16,19 @@ local tirs = {}
 local explos = {}
 local exploSprites = {"images/explo/explosion1.png","images/explo/explosion2.png","images/explo/explosion3.png","images/explo/explosion4.png","images/explo/explosion5.png"}
 
----- Reload ----
-local timeReload = 10
-local canShoot = true
-
-
 ---- Curseur Souris ----
 local mouseX = 0
 local mouseY = 0
 
-
+---- HUD ----
 local mainHUD = love.graphics.newImage("images/UI/mainHUD.png")
 local reloadingMask = love.graphics.newImage("images/UI/blue_button13.png")
+
+---- Reload ----
+local timeReload = 10
+local canShoot = true
+
+local myCol = require("game")
 
 ---- Fonctions ----
 
@@ -42,6 +44,11 @@ end
 
 function tank.Update(dt)
     
+    ---- Rotation tourelle ----
+    mouseX,mouseY = love.mouse.getPosition()
+
+    tourelle.angle = math.atan2(mouseY - tank.y, mouseX - tank.x) -- Angle de la tourelle vers le curseur de la souris
+
     ---- CONTROLLES ----
     if love.keyboard.isDown("s") then
         local vx = tank.s * math.cos(tank.angle)
@@ -64,12 +71,6 @@ function tank.Update(dt)
         tank.angle = tank.angle + (1 * dt)
     end
 
-    ---- Rotation tourelle ----
-    mouseX = love.mouse.getX()
-    mouseY = love.mouse.getY()
-
-    tourelle.angle = math.atan2(mouseY - tank.y, mouseX - tank.x) -- Angle de la tourelle vers le curseur de la souris
-
     ---- Mouvements Boulets ----
     local ennListe = require("enn")
     local ennemis = {}
@@ -82,7 +83,7 @@ function tank.Update(dt)
         monBoulet.x = tirs[i].x + (vx * dt)
         monBoulet.y = tirs[i].y + (vy * dt)
 
-        ---- Collisions ----
+        ---- Collisions Ennemis ----
         for n=#ennemis,1,-1 do
             local monEnnemi = ennemis[n]
             if math.dist(monBoulet.x, monBoulet.y, monEnnemi.x, monEnnemi.y) < (monEnnemi.imgBase:getWidth()/2) then
@@ -91,7 +92,20 @@ function tank.Update(dt)
                 table.remove(tirs, i)
             end
         end
-    end
+
+        ---- Collisions Map ----
+        local cc, col
+        for cl=1,MAP_HEIGHT,1 do
+            for cc=1,MAP_WIDTH,1 do
+                local id = myCol.colMap[cl][cc]
+                if id ~= 0 then
+                    if math.dist(tank.x,tank.y,(cc-1)*TILE_WIDTH,(cl-1)*TILE_HEIGHT) then
+                        print("Collision !")
+                    end
+                end
+            end
+        end
+        end
     
     ---- Animations Explosions ----
 
@@ -149,7 +163,7 @@ function tank.Draw()
 
 
     --- DEBUG ---
-    love.graphics.print("VALUE:"..tostring(tank.power))
+    --love.graphics.print("VALUE:"..tostring(tank.power))
 end
 
 function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a la liste "tirs"

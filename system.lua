@@ -1,8 +1,13 @@
 local PI = math.pi
 
-defaultFont = love.graphics.newFont("fonts/kenvector_future.ttf",40)
+MAP_WIDTH = 20
+MAP_HEIGHT = 11
+TILE_WIDTH = 64
+TILE_HEIGHT = 64
 
-function limit(v,c1,c2) -- Pour limiter une valeu /!\ C'est pas un Clamp !
+DEFAULT_FONT = love.graphics.newFont("fonts/kenvector_future.ttf",40)
+
+function Limit(v,c1,c2) -- Pour limiter une valeu /!\ C'est pas un Clamp !
     local value = v
     if value < c1 then
         value = c1

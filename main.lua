@@ -41,7 +41,7 @@ function love.update(dt)
 end
 
 function love.draw()
-    love.graphics.setFont(defaultFont)
+    love.graphics.setFont(DEFAULT_FONT)
     if myMainMenu.state then -- Si le menu est activé on l'affiche
         myMainMenu.Draw()
     else -- Sinon on affiche le jeu

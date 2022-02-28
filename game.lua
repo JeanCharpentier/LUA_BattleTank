@@ -3,10 +3,7 @@ require("system")
 
 local Game = {}
 
-local MAP_WIDTH = 20
-local MAP_HEIGHT = 11
-local TILE_WIDTH = 64
-local TILE_HEIGHT = 64
+
 
 ---- Screen Shake ----
 local dx = 0
@@ -26,6 +23,28 @@ Game.Map =  {
         {1, 16, 3, 3, 17, 1, 1, 1, 1, 1, 8, 21, 31, 22, 21, 21, 22, 31, 21, 21},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 8, 21, 21, 36, 23, 23, 37, 21, 21, 21}
     }
+
+Game.colMap = {}
+Game.colMap =  {
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+        {1, 1, 3, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 2, 0, 0, 0, 1},
+        {1, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 4, 0, 0, 1},
+        {1, 2, 1, 1, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1},
+        {1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 0, 0, 0, 1},
+        {1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 3, 3, 3, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    }
+Game.colSprites = {}
+Game.colSprites ={
+    "images/obs/barricadeMetal.png",
+    "images/obs/crateMetal.png",
+    "images/obs/crateWood.png",
+    "images/obs/treeBrown_large.png"
+}
 
 Game.Tilesheet = nil
 
@@ -69,6 +88,20 @@ function Game.Draw()
 
             if texQuad ~= nil then
                 love.graphics.draw(Game.Tilesheet,texQuad,(c-1)*TILE_WIDTH,(l-1)*TILE_HEIGHT)
+            end
+        end
+    end
+
+    ---- Affichage Colliders ----
+    local cc, col
+    for cl=1,MAP_HEIGHT,1 do
+        for cc=1,MAP_WIDTH,1 do
+            local id = Game.colMap[cl][cc]
+            if id ~= 0 then
+                local texCol = love.graphics.newImage(tostring(Game.colSprites[id]))
+                if texCol ~= nil and texCol ~= 0 then
+                    love.graphics.draw(texCol,(cc-1)*TILE_WIDTH,(cl-1)*TILE_HEIGHT)
+                end
             end
         end
     end

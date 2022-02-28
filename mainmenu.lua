@@ -21,7 +21,6 @@ end
 
 function mainmenu.Update(dt)
 
-
     local mouseX = love.mouse.getX()
     local mouseY = love.mouse.getY()
 
