@@ -5,7 +5,14 @@ local V_OFFSET = 400
 local btnFrames = {love.graphics.newImage("images/UI/green_button01.png"), love.graphics.newImage("images/UI/green_button00.png")}
 local buttons = {}
 
-
+--[[
+██╗      ██████╗  █████╗ ██████╗ 
+██║     ██╔═══██╗██╔══██╗██╔══██╗
+██║     ██║   ██║███████║██║  ██║
+██║     ██║   ██║██╔══██║██║  ██║
+███████╗╚██████╔╝██║  ██║██████╔╝
+╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
+]]
 function mainmenu.Load()
     mainmenu.state = true
 
@@ -18,7 +25,14 @@ function mainmenu.Load()
     end
 
 end
-
+--[[
+██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗
+██║   ██║██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
+██║   ██║██████╔╝██║  ██║███████║   ██║   █████╗  
+██║   ██║██╔═══╝ ██║  ██║██╔══██║   ██║   ██╔══╝  
+╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗
+ ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+]]
 function mainmenu.Update(dt)
 
     local mouseX = love.mouse.getX()
@@ -41,7 +55,14 @@ function mainmenu.Update(dt)
     end
 
 end
-
+--[[    
+██████╗ ██████╗  █████╗ ██╗    ██╗
+██╔══██╗██╔══██╗██╔══██╗██║    ██║
+██║  ██║██████╔╝███████║██║ █╗ ██║
+██║  ██║██╔══██╗██╔══██║██║███╗██║
+██████╔╝██║  ██║██║  ██║╚███╔███╔╝
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ 
+]]
 function mainmenu.Draw()
     for i=1,#buttons,1 do
         local btn = buttons[i]

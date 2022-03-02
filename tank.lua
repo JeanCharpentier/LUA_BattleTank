@@ -31,7 +31,14 @@ local canShoot = true
 local myCol = require("game")
 
 ---- Fonctions ----
-
+--[[
+██╗      ██████╗  █████╗ ██████╗ 
+██║     ██╔═══██╗██╔══██╗██╔══██╗
+██║     ██║   ██║███████║██║  ██║
+██║     ██║   ██║██╔══██║██║  ██║
+███████╗╚██████╔╝██║  ██║██████╔╝
+╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
+]]
 function tank.Load()
 
     ---- Chargement et création du tank + tourelle ----
@@ -42,11 +49,19 @@ function tank.Load()
 
 end
 
+--[[
+██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗
+██║   ██║██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
+██║   ██║██████╔╝██║  ██║███████║   ██║   █████╗  
+██║   ██║██╔═══╝ ██║  ██║██╔══██║   ██║   ██╔══╝  
+╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗
+ ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+]]
+
 function tank.Update(dt)
     
     ---- Rotation tourelle ----
     mouseX,mouseY = love.mouse.getPosition()
-
     tourelle.angle = math.atan2(mouseY - tank.y, mouseX - tank.x) -- Angle de la tourelle vers le curseur de la souris
 
     ---- CONTROLLES ----
@@ -92,23 +107,36 @@ function tank.Update(dt)
                 table.remove(tirs, i)
             end
         end
+    end
 
-        ---- Collisions Map ----
-        local cc, col
-        for cl=1,MAP_HEIGHT,1 do
-            for cc=1,MAP_WIDTH,1 do
-                local id = myCol.colMap[cl][cc]
-                if id ~= 0 then
-                    if math.dist(tank.x,tank.y,(cc-1)*TILE_WIDTH,(cl-1)*TILE_HEIGHT) then
-                        print("Collision !")
+    ---- Collisions Décors ----
+    local cc, col
+    for cl=1,MAP_HEIGHT,1 do
+        for cc=1,MAP_WIDTH,1 do
+            local id = myCol.colMap[cl][cc]
+            local vx = tank.s * math.cos(tank.angle)
+            local vy = tank.s * math.sin(tank.angle)
+            local tx = (cc-1)*TILE_WIDTH -- Position selon la taille de la tuile et son emplacement dans la grille
+            local ty = (cl-1)*TILE_HEIGHT
+            if id ~= 0 and id ~= 1 then -- Si on touche un arbre ou une caisse, on la détruit
+                if CheckCollisions(tank.x-20,tank.y-20,40,40,tx-20,ty-20,40,40) then
+                    myCol.colMap[cl][cc] = 0
+                    table.insert(explos, Explosion(tx, ty))
+                end
+            end
+            if id == 1 then -- Si on touche une barriquade, on ralentit
+                if CheckCollisions(tank.x-20,tank.y-20,40,40,tx-20,ty-20,40,40) then
+                    if math.dist(tank.x, tank.y,tx,ty) < 40 then
+                        tank.s = MAX_SPEED / 3
+                    else
+                        tank.s = MAX_SPEED
                     end
                 end
             end
         end
-        end
+    end
     
     ---- Animations Explosions ----
-
     for n=#explos,1,-1 do
         local frame = explos[n].frames
         local myTime = explos[n].time + (10 * dt)
@@ -121,7 +149,6 @@ function tank.Update(dt)
     end
 
     ---- Boost et Power ----
-
     if tank.power > 0 and isBoost then
         tank.power = tank.power - (60 * dt)
     elseif tank.power <= 0 then
@@ -137,7 +164,14 @@ function tank.Update(dt)
     end
 end
 
-
+--[[    
+██████╗ ██████╗  █████╗ ██╗    ██╗
+██╔══██╗██╔══██╗██╔══██╗██║    ██║
+██║  ██║██████╔╝███████║██║ █╗ ██║
+██║  ██║██╔══██╗██╔══██║██║███╗██║
+██████╔╝██║  ██║██║  ██║╚███╔███╔╝
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ 
+]]
 
 function tank.Draw()
     ----- Affichage Tank, Tourelle et tirs ----
@@ -153,7 +187,6 @@ function tank.Draw()
         love.graphics.draw(imgExplo, explos[i].x, explos[i].y,explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
     end
 
-
     ---- Affichage HUD ----
     love.graphics.draw(mainHUD,0,0)
 
@@ -163,7 +196,10 @@ function tank.Draw()
 
 
     --- DEBUG ---
-    --love.graphics.print("VALUE:"..tostring(tank.power))
+    local vx = tank.s * math.cos(tank.angle)
+    local vy = tank.s * math.sin(tank.angle)
+    love.graphics.line(tank.x + (vx/2), tank.y + (vy/2),tank.x,tank.y)
+    love.graphics.print("VALUE:"..tostring(math.dist(tank.x + (vx/2), tank.y + (vy/2),tank.x,tank.y)))
 end
 
 function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a la liste "tirs"

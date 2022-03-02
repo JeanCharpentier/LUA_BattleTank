@@ -7,6 +7,18 @@ TILE_HEIGHT = 64
 
 DEFAULT_FONT = love.graphics.newFont("fonts/kenvector_future.ttf",40)
 
+
+function CheckCollisions(lx1,ly1,lw1,lh1,lx2,ly2,lw2,lh2)
+    return lx1 < lx2+lw2 and
+    lx2 < lx1 + lw1 and
+    ly1 < ly2 + lh2 and
+    ly2 < ly1 + lh1
+end
+
+function math.dist(x1,y1, x2,y2) -- Collision par distance !
+    return ((x2-x1)^2+(y2-y1)^2)^0.5
+end
+
 function Limit(v,c1,c2) -- Pour limiter une valeu /!\ C'est pas un Clamp !
     local value = v
     if value < c1 then
@@ -15,10 +27,6 @@ function Limit(v,c1,c2) -- Pour limiter une valeu /!\ C'est pas un Clamp !
         value = c2
     end
     return value
-end
-
-function math.dist(x1,y1, x2,y2) -- Collision par distance !
-    return ((x2-x1)^2+(y2-y1)^2)^0.5
 end
 
 function Explosion(lx,ly) -- Créer une explosion
