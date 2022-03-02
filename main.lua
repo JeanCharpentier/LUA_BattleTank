@@ -15,7 +15,14 @@ local myGame = require("game")
 local myTank = require("tank")
 local myEnn = require("enn")
 local myMainMenu = require("mainmenu")
-
+--[[
+██╗      ██████╗  █████╗ ██████╗ 
+██║     ██╔═══██╗██╔══██╗██╔══██╗
+██║     ██║   ██║███████║██║  ██║
+██║     ██║   ██║██╔══██║██║  ██║
+███████╗╚██████╔╝██║  ██║██████╔╝
+╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
+]]
 function love.load()
     love.window.setMode(1280,720)
 
@@ -29,7 +36,14 @@ function love.load()
     myTank.Load()
     myEnn.Load()
 end
-
+--[[
+██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗
+██║   ██║██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
+██║   ██║██████╔╝██║  ██║███████║   ██║   █████╗  
+██║   ██║██╔═══╝ ██║  ██║██╔══██║   ██║   ██╔══╝  
+╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗
+ ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+]]
 function love.update(dt)
     if myMainMenu.state then -- Si le menu est activé on l'update
         myMainMenu.Update(dt)
@@ -39,7 +53,14 @@ function love.update(dt)
         myEnn.Update(dt)
     end
 end
-
+--[[    
+██████╗ ██████╗  █████╗ ██╗    ██╗
+██╔══██╗██╔══██╗██╔══██╗██║    ██║
+██║  ██║██████╔╝███████║██║ █╗ ██║
+██║  ██║██╔══██╗██╔══██║██║███╗██║
+██████╔╝██║  ██║██║  ██║╚███╔███╔╝
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ 
+]]
 function love.draw()
     love.graphics.setFont(DEFAULT_FONT)
     if myMainMenu.state then -- Si le menu est activé on l'affiche

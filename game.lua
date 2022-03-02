@@ -1,13 +1,8 @@
 require("system")
 
-
 local Game = {}
 
-
-
----- Screen Shake ----
-local dx = 0
-local dy = 0
+---- Maps ----
 
 Game.Map = {}
 Game.Map =  {
@@ -38,6 +33,10 @@ Game.colMap =  {
         {1, 3, 3, 3, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
         {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
     }
+
+Game.Tilesheet = nil
+Game.TileTextures = {} --Tableau des textures
+
 Game.colSprites = {}
 Game.colSprites ={
     "images/obs/barricadeMetal.png",
@@ -45,16 +44,21 @@ Game.colSprites ={
     "images/obs/crateWood.png",
     "images/obs/treeBrown_large.png"
 }
-
-Game.Tilesheet = nil
-
-Game.TileTextures = {} --Tableau des textures
-
+--[[
+██╗      ██████╗  █████╗ ██████╗ 
+██║     ██╔═══██╗██╔══██╗██╔══██╗
+██║     ██║   ██║███████║██║  ██║
+██║     ██║   ██║██╔══██║██║  ██║
+███████╗╚██████╔╝██║  ██║██████╔╝
+╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
+]]
 function Game.Load()
     Game.Tilesheet = love.graphics.newImage("images/terrainTiles_default.png")
     local nbColumns = Game.Tilesheet:getWidth() / TILE_WIDTH
     local nbLines = Game.Tilesheet:getHeight() / TILE_HEIGHT
 
+
+    ---- Découpage TileSheet ----
     local l,c
     local id = 1
     Game.TileTextures[0] = nil
@@ -64,19 +68,27 @@ function Game.Load()
             id = id + 1
         end
     end
-
-    print("Game:Textures Loading...")
 end
-
+--[[
+██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗
+██║   ██║██╔══██╗██╔══██╗██╔══██╗╚══██╔══╝██╔════╝
+██║   ██║██████╔╝██║  ██║███████║   ██║   █████╗  
+██║   ██║██╔═══╝ ██║  ██║██╔══██║   ██║   ██╔══╝  
+╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗
+ ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+]]
 function Game.Update(dt)
 
 end
-
+--[[    
+██████╗ ██████╗  █████╗ ██╗    ██╗
+██╔══██╗██╔══██╗██╔══██╗██║    ██║
+██║  ██║██████╔╝███████║██║ █╗ ██║
+██║  ██║██╔══██╗██╔══██║██║███╗██║
+██████╔╝██║  ██║██║  ██║╚███╔███╔╝
+╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ 
+]]
 function Game.Draw()
-
-    ---- Screen Shake ----
-
-    love.graphics.translate(dx,dy)
 
     ----- Affichge Map ------
     local c,l
@@ -100,7 +112,7 @@ function Game.Draw()
             if id ~= 0 then
                 local texCol = love.graphics.newImage(tostring(Game.colSprites[id]))
                 if texCol ~= nil and texCol ~= 0 then
-                    love.graphics.draw(texCol,(cc-1)*TILE_WIDTH,(cl-1)*TILE_HEIGHT)
+                    love.graphics.draw(texCol,(cc-1)*TILE_WIDTH,(cl-1)*TILE_HEIGHT,0,1,1,texCol:getWidth()/2,texCol:getHeight()/2)
                 end
             end
         end
