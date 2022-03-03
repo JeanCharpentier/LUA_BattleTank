@@ -1,4 +1,4 @@
-require("system")
+local mySystem = require("system")
 
 ---- Tank -----
 local tank = {}
@@ -96,7 +96,7 @@ function tank.Update(dt)
         monBoulet.x = tirs[i].x + (vx * dt)
         monBoulet.y = tirs[i].y + (vy * dt)
         
-        if isOutsideScreen(monBoulet) then
+        if mySystem.isOutsideScreen(monBoulet) then
             table.remove(tirs, i)
         end
 
@@ -104,7 +104,7 @@ function tank.Update(dt)
         for n=#ennemis,1,-1 do
             local monEnnemi = ennemis[n]
             if math.dist(monBoulet.x, monBoulet.y, monEnnemi.x, monEnnemi.y) < (monEnnemi.imgBase:getWidth()/2) then
-                table.insert(explos,Explosion(monBoulet.x,monBoulet.y))
+                table.insert(explos,mySystem.Explosion(monBoulet.x,monBoulet.y))
                 if (monEnnemi.vie - monBoulet.degats) > 0 then
                     monEnnemi.vie = monEnnemi.vie - monBoulet.degats
                     table.remove(tirs, i)
@@ -118,21 +118,21 @@ function tank.Update(dt)
 
     ---- Collisions Décors ----
     local cc, col
-    for cl=1,MAP_HEIGHT,1 do
-        for cc=1,MAP_WIDTH,1 do
+    for cl=1,mySystem.MAP_HEIGHT,1 do
+        for cc=1,mySystem.MAP_WIDTH,1 do
             local id = myCol.colMap[cl][cc]
             local vx = tank.s * math.cos(tank.angle)
             local vy = tank.s * math.sin(tank.angle)
-            local tx = (cc-1)*TILE_WIDTH -- Position selon la taille de la tuile et son emplacement dans la grille
-            local ty = (cl-1)*TILE_HEIGHT
+            local tx = (cc-1)*mySystem.TILE_WIDTH -- Position selon la taille de la tuile et son emplacement dans la grille
+            local ty = (cl-1)*mySystem.TILE_HEIGHT
             if id ~= 0 and id ~= 1 then -- Si on touche un arbre ou une caisse, on la détruit
-                if CheckCollisions(tank.x-20,tank.y-20,40,40,tx-20,ty-20,40,40) then
+                if mySystem.CheckCollisions(tank.x-20,tank.y-20,40,40,tx-20,ty-20,40,40) then
                     myCol.colMap[cl][cc] = 0
-                    table.insert(explos, Explosion(tx, ty))
+                    table.insert(explos, mySystem.Explosion(tx, ty))
                 end
             end
             if id == 1 then -- Si on touche une barriquade, on ralentit
-                if CheckCollisions(tank.x-20,tank.y-20,40,40,tx-20,ty-20,40,40) then
+                if mySystem.CheckCollisions(tank.x-20,tank.y-20,40,40,tx-20,ty-20,40,40) then
                     if math.dist(tank.x, tank.y,tx,ty) < 40 then
                         tank.s = MAX_SPEED / 3
                     else
@@ -198,8 +198,8 @@ function tank.Draw()
     love.graphics.draw(mainHUD,0,0)
 
     ---- Affichage BOOST ----
-    love.graphics.rectangle("fill", 100, hauteur - (reloadingMask:getHeight() + 10), (tank.power * reloadingMask:getWidth()) / 100, reloadingMask:getHeight())
-    love.graphics.draw(reloadingMask, 100, hauteur - (reloadingMask:getHeight() + 10))
+    love.graphics.rectangle("fill", 100, mySystem.hauteur - (reloadingMask:getHeight() + 10), (tank.power * reloadingMask:getWidth()) / 100, reloadingMask:getHeight())
+    love.graphics.draw(reloadingMask, 100, mySystem.hauteur - (reloadingMask:getHeight() + 10))
 
     ---- Affichage Vie ----
     love.graphics.setColor(0,255,0,0.5)

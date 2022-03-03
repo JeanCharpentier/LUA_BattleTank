@@ -19,7 +19,7 @@ function system.Load()
 end
 
 function system.isOutsideScreen(lObject) -- Vérifie si un objet sort de l'écran
-    if lObject.x < 0 or lObject.x > largeur or lObject.y < 0 or lObject.y > hauteur then
+    if lObject.x < 0 or lObject.x > system.largeur or lObject.y < 0 or lObject.y > system.hauteur then
         return true
     else
         return false
