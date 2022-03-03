@@ -9,11 +9,11 @@ local tourelle = {}
 tank = {x=200,y=200,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100,vie=100}
 
 ---- Boulets et Tirs ----
-local imgTir = {love.graphics.newImage("images/bulletsDouble.png"),love.graphics.newImage("images/bulletRed2.png")}
+local imgTir = {love.graphics.newImage("images/bulletsDouble.png"),love.graphics.newImage("images/bulletRed2.png"),love.graphics.newImage("images/bulletDark3.png")}
 tank.tirs = {}
 
 ---- Explosions ----
-local explos = {}
+tank.explos = {}
 local EXPLOSPRITES = {
     love.graphics.newImage("images/explo/explosion1.png"),
     love.graphics.newImage("images/explo/explosion2.png"),
@@ -25,14 +25,6 @@ local EXPLOSPRITES = {
 ---- Curseur Souris ----
 local mouseX = 0
 local mouseY = 0
-
----- HUD ----
-local mainHUD = love.graphics.newImage("images/UI/mainHUD.png")
-local reloadingMask = love.graphics.newImage("images/UI/blue_button13.png")
-
----- Reload ----
-local timeReload = 10
-local canShoot = true
 
 ---- Fonctions ----
 --[[
@@ -105,11 +97,17 @@ function tank.Update(dt)
         for n=#ennemis,1,-1 do
             local monEnnemi = ennemis[n]
             if math.dist(monBoulet.x, monBoulet.y, monEnnemi.x, monEnnemi.y) < (monEnnemi.imgBase:getWidth()/2) then
-                table.insert(explos,mySystem.Explosion(monBoulet.x,monBoulet.y))
+                table.insert(tank.explos,mySystem.Explosion(monBoulet.x,monBoulet.y))
                 if (monEnnemi.vie - monBoulet.degats) > 0 then
                     monEnnemi.vie = monEnnemi.vie - monBoulet.degats
                     table.remove(tank.tirs, i)
+                    if monBoulet.type == 2 then
+                        tank.spray(monBoulet)
+                    end
                 else
+                    if monBoulet.type == 2 then
+                        tank.spray(monBoulet)
+                    end
                     table.remove(ennemis, n)
                     table.remove(tank.tirs, i)
                 end
@@ -129,7 +127,7 @@ function tank.Update(dt)
             if id ~= 0 and id ~= 1 then -- Si on touche un arbre ou une caisse, on la détruit
                 if mySystem.CheckCollisions(tank.x-20,tank.y-20,40,40,tx-20,ty-20,40,40) then
                     myGame.colMap[cl][cc] = 0
-                    table.insert(explos, mySystem.Explosion(tx, ty))
+                    table.insert(tank.explos, mySystem.Explosion(tx, ty))
                 end
             end
             if id == 1 then -- Si on touche une barriquade, on ralentit
@@ -147,14 +145,14 @@ function tank.Update(dt)
     end
     
     ---- Animations Explosions ----
-    for n=#explos,1,-1 do
-        local frame = explos[n].frames
-        local myTime = explos[n].time + (10 * dt)
-        explos[n].time = myTime
-        if explos[n].time <= #EXPLOSPRITES then
-            explos[n].frames = math.floor(explos[n].time)
+    for n=#tank.explos,1,-1 do
+        local frame = tank.explos[n].frames
+        local myTime = tank.explos[n].time + (10 * dt)
+        tank.explos[n].time = myTime
+        if tank.explos[n].time <= #EXPLOSPRITES then
+            tank.explos[n].frames = math.floor(tank.explos[n].time)
         else
-            table.remove(explos,n)
+            table.remove(tank.explos,n)
         end
     end
 
@@ -192,19 +190,27 @@ function tank.Draw()
     love.graphics.draw(tourelle.imgBase,tank.x,tank.y,tourelle.angle,1,1,tourelle.imgBase:getWidth()/5,tourelle.imgBase:getHeight()/2) -- Affichage Tourelle
     
     ---- Affichage Explosions ----
-    for i=1,#explos,1 do
-        local imgExplo = EXPLOSPRITES[explos[i].frames]
-        love.graphics.draw(imgExplo, explos[i].x, explos[i].y,explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
+    for i=1,#tank.explos,1 do
+        local imgExplo = EXPLOSPRITES[tank.explos[i].frames]
+        love.graphics.draw(imgExplo, tank.explos[i].x, tank.explos[i].y,tank.explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
     end
 
     ---- Affichage HUD ----
-    love.graphics.draw(mainHUD,0,0)
+    love.graphics.draw(mySystem.MAIN_HUD,0,0)
 
     ---- Affichage BOOST ----
     love.graphics.setColor(0,255,0,1)
-    love.graphics.rectangle("fill", 100, mySystem.HAUTEUR - (reloadingMask:getHeight() + 10), (tank.power * reloadingMask:getWidth()) / 100, reloadingMask:getHeight())
+    love.graphics.rectangle("fill", 100, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10), (tank.power * mySystem.LOADING_MASK:getWidth()) / 100, mySystem.LOADING_MASK:getHeight())
     love.graphics.setColor(255,255,255,1)
-    love.graphics.draw(reloadingMask, 100, mySystem.HAUTEUR - (reloadingMask:getHeight() + 10))
+    love.graphics.draw(mySystem.LOADING_MASK, 100, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10))
+    myUI.Print("Power",0,0,0,1,90+(mySystem.LOADING_MASK:getWidth()/2),mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() * 1.5),300,"center",0,0.3,0.3,0,0,0,0)
+
+    ---- Affichage Reload ----
+    love.graphics.setColor(0,0,255,1)
+    love.graphics.rectangle("fill", 300, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10), (tank.power * mySystem.LOADING_MASK:getWidth()) / 100, mySystem.LOADING_MASK:getHeight())
+    love.graphics.setColor(255,255,255,1)
+    love.graphics.draw(mySystem.LOADING_MASK, 300, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10))
+    myUI.Print("Reloading",0,0,0,1,274+(mySystem.LOADING_MASK:getWidth()/2),mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() * 1.5),300,"center",0,0.3,0.3,0,0,0,0)
 
     ---- Affichage Vie ----
     love.graphics.setColor(0,255,0,0.5)
@@ -228,23 +234,43 @@ end
 ██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
 ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 ]]
-function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a la liste "tirs"
+function tank.creerTir(type,ang,parent) -- Créer un boulet selon son type et l'ajouter a la liste "tirs"
     local boulet = {}
-    local ang = 0
     local s = 0
     local d = 0
+    local bx = 0
+    local by = 0
+
+    if ang == nil then
+        ang = 0
+    end
     if type == 2 then
         ang = tourelle.angle
         s = 100
-        d = 10
+        d = 50
+        bx = tank.x
+        by = tank.y
+    elseif type == 3 then
+        s = 500
+        d = 2
+        bx = parent.x
+        by = parent.y
     elseif type == 1 then
         ang = tank.angle
         s = 500
         d = 5
+        bx = tank.x
+        by = tank.y
     end
-    boulet = {x=tank.x,y=tank.y,imgBase=imgTir[type],angle=ang,type=type,speed=s,degats=d}
+    boulet = {x=bx,y=by,imgBase=imgTir[type],angle=ang,type=type,speed=s,degats=d}
     table.insert(tank.tirs,boulet)
     return boulet
+end
+
+function tank.spray(lBoulet)
+    for i=(mySystem.PI/4),((2 * mySystem.PI) - (mySystem.PI/4)),0.6 do
+        tank.creerTir(3,math.atan(math.cos(i))+lBoulet.angle,lBoulet)
+    end
 end
 
 function tank.boost() -- Lance le boost

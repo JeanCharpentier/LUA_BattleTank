@@ -35,7 +35,7 @@ end
 ╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗
  ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
 ]]
-function mainmenu.Update(dt,lEnn,lTank)
+function mainmenu.Update(dt)
 
     local mouseX = love.mouse.getX()
     local mouseY = love.mouse.getY()
@@ -47,10 +47,10 @@ function mainmenu.Update(dt,lEnn,lTank)
             if love.mouse.isDown(1) then
                 if i == 1 then
                     if mainmenu.condition ~= nil then
-                        mySystem.resetGame(lTank,lEnn)
+                        mySystem.resetGame()
                     end
                     mainmenu.state = false -- Lance le jeu si bouton Play
-                    lEnn.Load() -- Création d'une nouvelle table d'ennemis
+                    myEnn.Load() -- Création d'une nouvelle table d'ennemis
                 elseif i == 2 then
                     local quit = love.event.quit() -- Quitte le jeu
                 end

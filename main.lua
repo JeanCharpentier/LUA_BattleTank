@@ -14,6 +14,7 @@ myGame = require("game")
 myTank = require("tank")
 myEnn = require("enn")
 myMainMenu = require("mainmenu")
+myUI = require("ui")
 
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
@@ -41,7 +42,7 @@ end
 ]]
 function love.update(dt)
     if myMainMenu.state then -- Si le menu est activé on l'update
-        myMainMenu.Update(dt,myEnn,myTank,mySystem)
+        myMainMenu.Update(dt)
     else -- Sinon on update la boucle de jeu
         myGame.Update(dt)
         myTank.Update(dt)

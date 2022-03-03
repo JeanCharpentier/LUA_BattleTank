@@ -9,6 +9,10 @@ system.TILE_HEIGHT = 64
 
 system.DEFAULT_FONT = love.graphics.newFont("fonts/kenvector_future.ttf",40)
 
+---- Interface ----
+system.MAIN_HUD = love.graphics.newImage("images/UI/mainHUD.png")
+system.LOADING_MASK = love.graphics.newImage("images/UI/blue_button13.png")
+
 function system.Load()
     love.window.setMode(1280,720)
 
@@ -62,7 +66,7 @@ function system.Explosion(lx,ly) -- Créer une explosion
 end
 
 function system.resetGame()
-    -- Reset Tank
+    -- Reset Tank et explosions en cours
     myTank.vie = 100
     myTank.power = 100
     myTank.x = 200
@@ -72,6 +76,9 @@ function system.resetGame()
     myTank.vy = 0
     for n=#myTank.tirs,1,-1 do
         table.remove(myTank.tirs,n)
+    end
+    for n=#myTank.explos,1,-1 do
+        table.remove(myTank.explos,n)
     end
     -- Reset ennemis et leurs tirs en cours
     for n=#myEnn.ennTirs,1,-1 do
