@@ -13,7 +13,7 @@ tank = {x=200,y=200,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarg
 
 ---- Boulets et Tirs ----
 local imgTir = {love.graphics.newImage("images/bulletsDouble.png"),love.graphics.newImage("images/bulletRed2.png")}
-local tirs = {}
+tank.tirs = {}
 
 ---- Explosions ----
 local explos = {}
@@ -93,15 +93,15 @@ function tank.Update(dt)
     local ennemis = {}
     ennemis = ennListe.getListe()
 
-    for i=#tirs,1,-1 do
-        local monBoulet = tirs[i]
+    for i=#tank.tirs,1,-1 do
+        local monBoulet = tank.tirs[i]
         local vx = monBoulet.speed * math.cos(monBoulet.angle)
         local vy = monBoulet.speed * math.sin(monBoulet.angle)
-        monBoulet.x = tirs[i].x + (vx * dt)
-        monBoulet.y = tirs[i].y + (vy * dt)
+        monBoulet.x = tank.tirs[i].x + (vx * dt)
+        monBoulet.y = tank.tirs[i].y + (vy * dt)
         
         if mySystem.isOutsideScreen(monBoulet,20) then
-            table.remove(tirs, i)
+            table.remove(tank.tirs, i)
         end
 
         ---- Collisions Ennemis ----
@@ -111,10 +111,10 @@ function tank.Update(dt)
                 table.insert(explos,mySystem.Explosion(monBoulet.x,monBoulet.y))
                 if (monEnnemi.vie - monBoulet.degats) > 0 then
                     monEnnemi.vie = monEnnemi.vie - monBoulet.degats
-                    table.remove(tirs, i)
+                    table.remove(tank.tirs, i)
                 else
                     table.remove(ennemis, n)
-                    table.remove(tirs, i)
+                    table.remove(tank.tirs, i)
                 end
             end
         end
@@ -189,8 +189,8 @@ end
 function tank.Draw()
     ----- Affichage Tank, Tourelle et tirs ----
     love.graphics.draw(tank.imgBase,tank.x,tank.y,tank.angle,1,1,tank.imgBase:getWidth()/2,tank.imgBase:getHeight()/2) -- Affichage Tank
-    for i=1,#tirs,1 do
-        love.graphics.draw(tirs[i].imgBase,tirs[i].x,tirs[i].y,tirs[i].angle,1,1,tirs[i].imgBase:getWidth()/2,tirs[i].imgBase:getHeight()/2) -- Affichages boulets
+    for i=1,#tank.tirs,1 do
+        love.graphics.draw(tank.tirs[i].imgBase,tank.tirs[i].x,tank.tirs[i].y,tank.tirs[i].angle,1,1,tank.tirs[i].imgBase:getWidth()/2,tank.tirs[i].imgBase:getHeight()/2) -- Affichages boulets
     end
     love.graphics.draw(tourelle.imgBase,tank.x,tank.y,tourelle.angle,1,1,tourelle.imgBase:getWidth()/5,tourelle.imgBase:getHeight()/2) -- Affichage Tourelle
     
@@ -246,7 +246,7 @@ function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a l
         d = 5
     end
     boulet = {x=tank.x,y=tank.y,imgBase=imgTir[type],angle=ang,type=type,speed=s,degats=d}
-    table.insert(tirs,boulet)
+    table.insert(tank.tirs,boulet)
     return boulet
 end
 

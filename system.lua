@@ -75,6 +75,9 @@ function system.gameOver(lTank,lTirs,lEnn)
     for n=#lEnn,1,-1 do
         table.remove(lEnn,n)
     end
+    for n=#lTank.tirs,1,-1 do
+        table.remove(lTank.tirs,n)
+    end
 end
 
 return system
