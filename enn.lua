@@ -14,8 +14,8 @@ local ennTirs = {}
 local imgTir = love.graphics.newImage("images/bulletRed2.png")
 
 ---- Timer tirs ----
-local tDuration = 2
-local tTime = 0
+enn.tDuration = 2
+enn.tTime = 0
 
 local condition = {}
 
@@ -43,13 +43,10 @@ end
 function enn.Update(dt)
     for n=#ennListe,1,-1 do
         local ennemi = ennListe[n]
-        enn.UpdateEnn(ennemi,myTank)
+        enn.UpdateEnn(ennemi,myTank,dt)
         ennemi.x = ennemi.x + (ennemi.vx * dt)
         ennemi.y = ennemi.y + (ennemi.vy * dt)
     end
-
-    ---- Timer tir automatique ----
-    tTime = tTime + (6*dt)
 
     ---- Update Boulets ----
     for i=#ennTirs,1,-1 do
@@ -146,7 +143,7 @@ end
 ███████║   ██║   ██║  ██║   ██║   ███████╗    ██║ ╚═╝ ██║██║  ██║╚██████╗██║  ██║██║██║ ╚████║███████╗
 ╚══════╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝
 ]]
-function enn.UpdateEnn(lEnn,lTank)
+function enn.UpdateEnn(lEnn,lTank,dt)
     if lEnn.state == ESTATES.NONE then
         lEnn.state = ESTATES.CHANGEDIR
     elseif lEnn.state == ESTATES.GARDE then
@@ -167,14 +164,15 @@ function enn.UpdateEnn(lEnn,lTank)
         lEnn.angle = angle
         lEnn.state = ESTATES.GARDE
     elseif lEnn.state == ESTATES.ATTACK then
+        lEnn.angle = math.angle(lEnn.x, lEnn.y, lTank.x, lTank.y)
+        lEnn.vx = 0
+        lEnn.vy = 0
+        enn.tTime = enn.tTime + (6*dt)
         if math.dist(lEnn.x,lEnn.y,lTank.x,lTank.y) >= 200 then
             lEnn.state = ESTATES.APPROCHE
         end
-        if tTime >= tDuration then
-            tTime = 0
-            lEnn.angle = math.angle(lEnn.x, lEnn.y, lTank.x, lTank.y)
-            lEnn.vx = 0
-            lEnn.vy = 0
+        if enn.tTime >= enn.tDuration then
+            enn.tTime = 0
             enn.creerTir(lEnn)
         end
     elseif lEnn.state == ESTATES.APPROCHE then

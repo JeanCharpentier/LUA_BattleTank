@@ -69,14 +69,15 @@ function system.gameOver(lTank,lTirs,lEnn)
     lTank.angle = 0
     lTank.vx = 0
     lTank.vy = 0
+    for n=#lTank.tirs,1,-1 do
+        table.remove(lTank.tirs,n)
+    end
+    
     for n=#lTirs,1,-1 do
         table.remove(lTirs,n)
     end
     for n=#lEnn,1,-1 do
         table.remove(lEnn,n)
-    end
-    for n=#lTank.tirs,1,-1 do
-        table.remove(lTank.tirs,n)
     end
 end
 
