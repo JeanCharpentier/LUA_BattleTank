@@ -7,6 +7,7 @@ local btnFrames = {love.graphics.newImage("images/UI/green_button01.png"), love.
 local buttons = {}
 
 mainmenu.state = true
+mainmenu.condition = ""
 
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
@@ -67,6 +68,7 @@ end
 ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ 
 ]]
 function mainmenu.Draw()
+    love.graphics.printf(mainmenu.condition,mySystem.LARGEUR/2,100,400,"center")
     for i=1,#buttons,1 do
         local btn = buttons[i]
         love.graphics.draw(btn.imgBase, btn.x,btn.y)

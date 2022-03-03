@@ -18,8 +18,8 @@ function system.Load()
     math.randomseed(os.time()) -- Reset de la graine du Random
 end
 
-function system.isOutsideScreen(lObject) -- Vérifie si un objet sort de l'écran
-    if lObject.x < 0 or lObject.x > system.LARGEUR or lObject.y < 0 or lObject.y > system.HAUTEUR then
+function system.isOutsideScreen(lObject,lOffset) -- Vérifie si un objet sort de l'écran
+    if (lObject.x < lOffset) or (lObject.x > system.LARGEUR + lOffset) or (lObject.y < lOffset) or (lObject.y > system.HAUTEUR+lOffset) then
         return true
     else
         return false
@@ -62,7 +62,6 @@ function system.Explosion(lx,ly) -- Créer une explosion
 end
 
 function system.gameOver(lTank,lTirs,lEnn)
-    print("Game Over !")
     lTank.vie = 100
     lTank.power = 100
     lTank.x = 200

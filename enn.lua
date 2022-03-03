@@ -8,7 +8,7 @@ local MAX_ENN = 6
 local ennListe = {}
 local ennImg = love.graphics.newImage("images/tank_blue.png")
 
-local ESTATES = {NONE = "none", GARDE = "garde", ATTACK = "attack", CHANGEDIR = "change", APPROCHE="approche"}
+local ESTATES = {NONE = "none", GARDE = "garde", ATTACK = "attack", CHANGEDIR = "change", APPROCHE="approche", OUTSIDE="outside"}
 
 local ennTirs = {}
 local imgTir = love.graphics.newImage("images/bulletRed2.png")
@@ -16,6 +16,8 @@ local imgTir = love.graphics.newImage("images/bulletRed2.png")
 ---- Timer tirs ----
 local tDuration = 2
 local tTime = 0
+
+local condition = {}
 
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
@@ -39,9 +41,8 @@ end
  ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
 ]]
 function enn.Update(dt)
-    print(tostring(myTank.x))
-    for i=#ennListe,1,-1 do
-        local ennemi = ennListe[i]
+    for n=#ennListe,1,-1 do
+        local ennemi = ennListe[n]
         enn.UpdateEnn(ennemi,myTank)
         ennemi.x = ennemi.x + (ennemi.vx * dt)
         ennemi.y = ennemi.y + (ennemi.vy * dt)
@@ -49,30 +50,34 @@ function enn.Update(dt)
 
     ---- Timer tir automatique ----
     tTime = tTime + (6*dt)
-    --print(tostring(tTime))
 
     ---- Update Boulets ----
     for i=#ennTirs,1,-1 do
         local monBoulet = ennTirs[i]
-        local vx = monBoulet.speed * math.cos(monBoulet.angle)
-        local vy = monBoulet.speed * math.sin(monBoulet.angle)
-        monBoulet.x = ennTirs[i].x + (vx * dt)
-        monBoulet.y = ennTirs[i].y + (vy * dt)
 
-        if mySystem.isOutsideScreen(monBoulet) then
+        if mySystem.isOutsideScreen(monBoulet,20) then -- On détruit les boulets qui sortent de l'écran
             table.remove(ennTirs, i)
-        end
-
-        ---- Collisions Tank ----
-        if math.dist(monBoulet.x, monBoulet.y, myTank.x, myTank.y) < 30 then
-            table.remove(ennTirs, i)
-            if myTank.vie >= 10 then
+        elseif math.dist(monBoulet.x, monBoulet.y, myTank.x, myTank.y) < 30 then -- Collision Tank
+            if myTank.vie > 10 then
                 myTank.vie = myTank.vie - 10
             else
                 mySystem.gameOver(myTank,ennTirs,ennListe)
                 myMainMenu.state = true
+                myMainMenu.condition = "defaite"
             end
+            table.remove(ennTirs, i)
+        else -- Sinon on update simplement
+            local vx = monBoulet.speed * math.cos(monBoulet.angle)
+            local vy = monBoulet.speed * math.sin(monBoulet.angle)
+            monBoulet.x = ennTirs[i].x + (vx * dt)
+            monBoulet.y = ennTirs[i].y + (vy * dt)
         end
+    end
+    ---- Si plus d'ennemis à l'écran ---
+    if #ennListe == 0 and (not myMainMenu.state) then
+        mySystem.gameOver(myTank,ennTirs,ennListe)
+        myMainMenu.state = true
+        myMainMenu.condition = "victoire"
     end
 end
 --[[    
@@ -148,6 +153,13 @@ function enn.UpdateEnn(lEnn,lTank)
         if math.dist(lEnn.x,lEnn.y,lTank.x,lTank.y) < 400 then
             lEnn.state = ESTATES.APPROCHE
         end
+        if mySystem.isOutsideScreen(lEnn,-30) then
+            lEnn.state = ESTATES.OUTSIDE
+        end
+    elseif lEnn.state == ESTATES.OUTSIDE then
+        local angle = math.angle(lEnn.x, lEnn.y, math.random(300,mySystem.LARGEUR-300),math.random(200,mySystem.HAUTEUR-200))
+        lEnn.angle = angle
+        lEnn.state = ESTATES.APPROCHE
     elseif lEnn.state == ESTATES.CHANGEDIR then
         local angle = math.angle(lEnn.x, lEnn.y, math.random(0,mySystem.LARGEUR), math.random(0,mySystem.HAUTEUR))
         lEnn.vx = lEnn.speed * math.cos(angle)
@@ -160,6 +172,9 @@ function enn.UpdateEnn(lEnn,lTank)
         end
         if tTime >= tDuration then
             tTime = 0
+            lEnn.angle = math.angle(lEnn.x, lEnn.y, lTank.x, lTank.y)
+            lEnn.vx = 0
+            lEnn.vy = 0
             enn.creerTir(lEnn)
         end
     elseif lEnn.state == ESTATES.APPROCHE then

@@ -100,7 +100,7 @@ function tank.Update(dt)
         monBoulet.x = tirs[i].x + (vx * dt)
         monBoulet.y = tirs[i].y + (vy * dt)
         
-        if mySystem.isOutsideScreen(monBoulet) then
+        if mySystem.isOutsideScreen(monBoulet,20) then
             table.remove(tirs, i)
         end
 
@@ -139,8 +139,10 @@ function tank.Update(dt)
                 if mySystem.CheckCollisions(tank.x-20,tank.y-20,40,40,tx-20,ty-20,40,40) then
                     if math.dist(tank.x, tank.y,tx,ty) < 40 then
                         tank.s = MAX_SPEED / 3
+                        tank.canBoost = false
                     else
                         tank.s = MAX_SPEED
+                        tank.canBoost = true
                     end
                 end
             end
@@ -202,7 +204,9 @@ function tank.Draw()
     love.graphics.draw(mainHUD,0,0)
 
     ---- Affichage BOOST ----
+    love.graphics.setColor(0,255,0,1)
     love.graphics.rectangle("fill", 100, mySystem.HAUTEUR - (reloadingMask:getHeight() + 10), (tank.power * reloadingMask:getWidth()) / 100, reloadingMask:getHeight())
+    love.graphics.setColor(255,255,255,1)
     love.graphics.draw(reloadingMask, 100, mySystem.HAUTEUR - (reloadingMask:getHeight() + 10))
 
     ---- Affichage Vie ----
@@ -244,11 +248,6 @@ function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a l
     boulet = {x=tank.x,y=tank.y,imgBase=imgTir[type],angle=ang,type=type,speed=s,degats=d}
     table.insert(tirs,boulet)
     return boulet
-end
-
-function tank.getInfos() -- Renvoi la position et la vie du Tank aux ennemis
-    local tankPos = {x=tank.x,y=tank.y,vie=tank.vie}
-    return tankPos
 end
 
 function tank.boost() -- Lance le boost
