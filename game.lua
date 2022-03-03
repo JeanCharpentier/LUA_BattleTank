@@ -1,4 +1,4 @@
-require("system")
+local mySystem = require("system")
 
 local Game = {}
 
@@ -54,8 +54,8 @@ Game.colSprites ={
 ]]
 function Game.Load()
     Game.Tilesheet = love.graphics.newImage("images/terrainTiles_default.png")
-    local nbColumns = Game.Tilesheet:getWidth() / TILE_WIDTH
-    local nbLines = Game.Tilesheet:getHeight() / TILE_HEIGHT
+    local nbColumns = Game.Tilesheet:getWidth() / mySystem.TILE_WIDTH
+    local nbLines = Game.Tilesheet:getHeight() / mySystem.TILE_HEIGHT
 
 
     ---- Découpage TileSheet ----
@@ -64,7 +64,7 @@ function Game.Load()
     Game.TileTextures[0] = nil
     for l=1,nbLines,1 do
         for c=1,nbColumns,1 do
-            Game.TileTextures[id] = love.graphics.newQuad((c-1)*TILE_WIDTH,(l-1)*TILE_HEIGHT,TILE_WIDTH,TILE_HEIGHT,Game.Tilesheet:getWidth(),Game.Tilesheet:getHeight())
+            Game.TileTextures[id] = love.graphics.newQuad((c-1)*mySystem.TILE_WIDTH,(l-1)*mySystem.TILE_HEIGHT,mySystem.TILE_WIDTH,mySystem.TILE_HEIGHT,Game.Tilesheet:getWidth(),Game.Tilesheet:getHeight())
             id = id + 1
         end
     end
@@ -93,26 +93,26 @@ function Game.Draw()
     ----- Affichge Map ------
     local c,l
 
-    for l=1,MAP_HEIGHT,1 do
-        for c=1,MAP_WIDTH,1 do
+    for l=1,mySystem.MAP_HEIGHT,1 do
+        for c=1,mySystem.MAP_WIDTH,1 do
             local id = Game.Map[l][c]
             local texQuad = Game.TileTextures[id]
 
             if texQuad ~= nil then
-                love.graphics.draw(Game.Tilesheet,texQuad,(c-1)*TILE_WIDTH,(l-1)*TILE_HEIGHT)
+                love.graphics.draw(Game.Tilesheet,texQuad,(c-1)*mySystem.TILE_WIDTH,(l-1)*mySystem.TILE_HEIGHT)
             end
         end
     end
 
     ---- Affichage Colliders ----
     local cc, col
-    for cl=1,MAP_HEIGHT,1 do
-        for cc=1,MAP_WIDTH,1 do
+    for cl=1,mySystem.MAP_HEIGHT,1 do
+        for cc=1,mySystem.MAP_WIDTH,1 do
             local id = Game.colMap[cl][cc]
             if id ~= 0 then
                 local texCol = love.graphics.newImage(tostring(Game.colSprites[id]))
                 if texCol ~= nil and texCol ~= 0 then
-                    love.graphics.draw(texCol,(cc-1)*TILE_WIDTH,(cl-1)*TILE_HEIGHT,0,1,1,texCol:getWidth()/2,texCol:getHeight()/2)
+                    love.graphics.draw(texCol,(cc-1)*mySystem.TILE_WIDTH,(cl-1)*mySystem.TILE_HEIGHT,0,1,1,texCol:getWidth()/2,texCol:getHeight()/2)
                 end
             end
         end
@@ -121,9 +121,9 @@ function Game.Draw()
     ------ ID de la tuile sous la souris --------
     local x = love.mouse.getX()
     local y = love.mouse.getY()
-    local col = math.floor(x / TILE_WIDTH) + 1
-    local lig = math.floor(y / TILE_HEIGHT) + 1
-    if col>0 and col<=MAP_WIDTH and lig>0 and lig<=MAP_HEIGHT then
+    local col = math.floor(x / mySystem.TILE_WIDTH) + 1
+    local lig = math.floor(y / mySystem.TILE_HEIGHT) + 1
+    if col>0 and col<=mySystem.MAP_WIDTH and lig>0 and lig<=mySystem.MAP_HEIGHT then
         local id = Game.Map[lig][col]
         --love.graphics.print("ID:"..tostring(id),10,10)
     end
