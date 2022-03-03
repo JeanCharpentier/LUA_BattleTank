@@ -1,5 +1,6 @@
 local mainmenu = {}
 
+local mySystem = require("system")
 local V_OFFSET = 400
 
 local btnFrames = {love.graphics.newImage("images/UI/green_button01.png"), love.graphics.newImage("images/UI/green_button00.png")}
@@ -20,7 +21,7 @@ function mainmenu.Load()
     table.insert(buttons, mainmenu.addButton("Quit"))
 
     for i=1,#buttons,1 do -- Alignement des boutons
-        buttons[i].x = (largeur/2)-(buttons[i].imgBase:getWidth()/2)
+        buttons[i].x = (mySystem.largeur/2)-(buttons[i].imgBase:getWidth()/2)
         buttons[i].y = (i*(buttons[i].imgBase:getHeight()+20))+V_OFFSET
     end
 
@@ -78,7 +79,6 @@ function mainmenu.addButton(ltexte)
     btn.y = 0
     btn.txt = ltexte
     btn.imgBase = btnFrames[1]
-    --btn.func = lfunc
     return btn
 
 end
