@@ -43,7 +43,6 @@ local myCol = require("game")
 ]]
 function tank.Load()
     ---- Chargement et création du tank + tourelle ----
-    --tank = {x=largeur/4,y=hauteur/2,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100,vie=100}
     tourelle = {x=tank.x,y=tank.y,angle=0,imgBase=love.graphics.newImage("images/specialBarrel1.png")}
 end
 
@@ -198,8 +197,8 @@ function tank.Draw()
     love.graphics.draw(mainHUD,0,0)
 
     ---- Affichage BOOST ----
-    love.graphics.rectangle("fill", 100, mySystem.hauteur - (reloadingMask:getHeight() + 10), (tank.power * reloadingMask:getWidth()) / 100, reloadingMask:getHeight())
-    love.graphics.draw(reloadingMask, 100, mySystem.hauteur - (reloadingMask:getHeight() + 10))
+    love.graphics.rectangle("fill", 100, mySystem.HAUTEUR - (reloadingMask:getHeight() + 10), (tank.power * reloadingMask:getWidth()) / 100, reloadingMask:getHeight())
+    love.graphics.draw(reloadingMask, 100, mySystem.HAUTEUR - (reloadingMask:getHeight() + 10))
 
     ---- Affichage Vie ----
     love.graphics.setColor(0,255,0,0.5)

@@ -12,14 +12,14 @@ system.DEFAULT_FONT = love.graphics.newFont("fonts/kenvector_future.ttf",40)
 function system.Load()
     love.window.setMode(1280,720)
 
-    system.largeur = love.graphics.getWidth()
-    system.hauteur = love.graphics.getHeight()
+    system.LARGEUR = love.graphics.getWidth()
+    system.HAUTEUR = love.graphics.getHeight()
 
     math.randomseed(os.time()) -- Reset de la graine du Random
 end
 
 function system.isOutsideScreen(lObject) -- Vérifie si un objet sort de l'écran
-    if lObject.x < 0 or lObject.x > system.largeur or lObject.y < 0 or lObject.y > system.hauteur then
+    if lObject.x < 0 or lObject.x > system.LARGEUR or lObject.y < 0 or lObject.y > system.HAUTEUR then
         return true
     else
         return false

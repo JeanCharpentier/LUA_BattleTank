@@ -123,8 +123,8 @@ function enn.creerTir(lEnn) -- Créer un boulet et l'ajouter a la liste "tirs"
 end
 
 function enn.creerEnn()
-    local lx = math.random(mySystem.largeur/2,mySystem.largeur-200)
-    local ly = math.random(200, mySystem.hauteur-200)
+    local lx = math.random(mySystem.LARGEUR/2,mySystem.LARGEUR-200)
+    local ly = math.random(200, mySystem.HAUTEUR-200)
     local enn = {}
     enn = {x=lx,y=ly,imgBase=ennImg,angle=0,speed=20,vx=0,vy=0,state=ESTATES.NONE,vie=20}
     table.insert(ennListe, enn)
@@ -146,7 +146,7 @@ function enn.UpdateEnn(lEnn,lTank)
             lEnn.state = ESTATES.APPROCHE
         end
     elseif lEnn.state == ESTATES.CHANGEDIR then
-        local angle = math.angle(lEnn.x, lEnn.y, math.random(0,mySystem.largeur), math.random(0,mySystem.hauteur))
+        local angle = math.angle(lEnn.x, lEnn.y, math.random(0,mySystem.LARGEUR), math.random(0,mySystem.HAUTEUR))
         lEnn.vx = lEnn.speed * math.cos(angle)
         lEnn.vy = lEnn.speed * math.sin(angle)
         lEnn.angle = angle

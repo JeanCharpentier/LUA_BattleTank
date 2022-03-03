@@ -21,7 +21,7 @@ function mainmenu.Load()
     table.insert(buttons, mainmenu.addButton("Quit"))
 
     for i=1,#buttons,1 do -- Alignement des boutons
-        buttons[i].x = (mySystem.largeur/2)-(buttons[i].imgBase:getWidth()/2)
+        buttons[i].x = (mySystem.LARGEUR/2)-(buttons[i].imgBase:getWidth()/2)
         buttons[i].y = (i*(buttons[i].imgBase:getHeight()+20))+V_OFFSET
     end
 
