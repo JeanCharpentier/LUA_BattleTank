@@ -38,12 +38,7 @@ Game.Tilesheet = nil
 Game.TileTextures = {} --Tableau des textures
 
 Game.colSprites = {}
-Game.colSprites ={
-    "images/obs/barricadeMetal.png",
-    "images/obs/crateMetal.png",
-    "images/obs/crateWood.png",
-    "images/obs/treeBrown_large.png"
-}
+
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
 ██║     ██╔═══██╗██╔══██╗██╔══██╗
@@ -68,6 +63,14 @@ function Game.Load()
             id = id + 1
         end
     end
+
+    ---- Chargement des objets de décor ----
+    Game.colSprites ={
+        love.graphics.newImage("images/obs/barricadeMetal.png"),
+        love.graphics.newImage("images/obs/crateMetal.png"),
+        love.graphics.newImage("images/obs/crateWood.png"),
+        love.graphics.newImage("images/obs/treeBrown_large.png")
+    }
 end
 --[[
 ██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗
@@ -110,7 +113,7 @@ function Game.Draw()
         for cc=1,mySystem.MAP_WIDTH,1 do
             local id = Game.colMap[cl][cc]
             if id ~= 0 then
-                local texCol = love.graphics.newImage(tostring(Game.colSprites[id]))
+                local texCol = Game.colSprites[id]
                 if texCol ~= nil and texCol ~= 0 then
                     love.graphics.draw(texCol,(cc-1)*mySystem.TILE_WIDTH,(cl-1)*mySystem.TILE_HEIGHT,0,1,1,texCol:getWidth()/2,texCol:getHeight()/2)
                 end

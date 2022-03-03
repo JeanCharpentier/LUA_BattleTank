@@ -11,12 +11,18 @@ local tourelle = {}
 tank = {x=100,y=100,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100,vie=100}
 
 ---- Boulets et Tirs ----
-local imgTir = {"images/bulletsDouble.png","images/bulletRed2.png"}
+local imgTir = {love.graphics.newImage("images/bulletsDouble.png"),love.graphics.newImage("images/bulletRed2.png")}
 local tirs = {}
 
 ---- Explosions ----
 local explos = {}
-local EXPLOSPRITES = {"images/explo/explosion1.png","images/explo/explosion2.png","images/explo/explosion3.png","images/explo/explosion4.png","images/explo/explosion5.png"}
+local EXPLOSPRITES = {
+    love.graphics.newImage("images/explo/explosion1.png"),
+    love.graphics.newImage("images/explo/explosion2.png"),
+    love.graphics.newImage("images/explo/explosion3.png"),
+    love.graphics.newImage("images/explo/explosion4.png"),
+    love.graphics.newImage("images/explo/explosion5.png")
+}
 
 ---- Curseur Souris ----
 local mouseX = 0
@@ -189,7 +195,7 @@ function tank.Draw()
     
     ---- Affichage Explosions ----
     for i=1,#explos,1 do
-        local imgExplo = love.graphics.newImage(EXPLOSPRITES[explos[i].frames])
+        local imgExplo = EXPLOSPRITES[explos[i].frames]
         love.graphics.draw(imgExplo, explos[i].x, explos[i].y,explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
     end
 
@@ -236,7 +242,7 @@ function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a l
         s = 500
         d = 5
     end
-    boulet = {x=tank.x,y=tank.y,imgBase=love.graphics.newImage(imgTir[type]),angle=ang,type=type,speed=s,degats=d}
+    boulet = {x=tank.x,y=tank.y,imgBase=imgTir[type],angle=ang,type=type,speed=s,degats=d}
     table.insert(tirs,boulet)
     return boulet
 end

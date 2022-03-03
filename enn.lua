@@ -9,6 +9,7 @@ local ennImg = love.graphics.newImage("images/tank_blue.png")
 local ESTATES = {NONE = "none", GARDE = "garde", ATTACK = "attack", CHANGEDIR = "change", APPROCHE="approche"}
 
 local ennTirs = {}
+local imgTir = love.graphics.newImage("images/bulletRed2.png")
 
 ---- Timer tirs ----
 local tDuration = 2
@@ -117,7 +118,7 @@ end
 function enn.creerTir(lEnn) -- Créer un boulet et l'ajouter a la liste "tirs"
     local boulet = {}
     local s = 120
-    boulet = {x=lEnn.x,y=lEnn.y,imgBase=love.graphics.newImage("images/bulletRed2.png"),angle=lEnn.angle,speed=s}
+    boulet = {x=lEnn.x,y=lEnn.y,imgBase=imgTir,angle=lEnn.angle,speed=s}
     table.insert(ennTirs,boulet)
     return boulet
 end
