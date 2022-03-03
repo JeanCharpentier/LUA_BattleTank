@@ -39,7 +39,7 @@ end
 function enn.Update(dt)
     for n=#enn.ennListe,1,-1 do
         local ennemi = enn.ennListe[n]
-        enn.UpdateEnn(ennemi,myTank,dt)
+        enn.UpdateEnn(ennemi,dt)
         ennemi.x = ennemi.x + (ennemi.vx * dt)
         ennemi.y = ennemi.y + (ennemi.vy * dt)
     end
@@ -137,11 +137,11 @@ end
 ███████║   ██║   ██║  ██║   ██║   ███████╗    ██║ ╚═╝ ██║██║  ██║╚██████╗██║  ██║██║██║ ╚████║███████╗
 ╚══════╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚══════╝    ╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝╚═╝  ╚═══╝╚══════╝
 ]]
-function enn.UpdateEnn(lEnn,lTank,dt)
+function enn.UpdateEnn(lEnn,dt)
     if lEnn.state == ESTATES.NONE then
         lEnn.state = ESTATES.CHANGEDIR
     elseif lEnn.state == ESTATES.GARDE then
-        if math.dist(lEnn.x,lEnn.y,lTank.x,lTank.y) < 400 then
+        if math.dist(lEnn.x,lEnn.y,myTank.x,myTank.y) < 400 then
             lEnn.state = ESTATES.APPROCHE
         end
         if mySystem.isOutsideScreen(lEnn,-30) then
@@ -158,11 +158,11 @@ function enn.UpdateEnn(lEnn,lTank,dt)
         lEnn.angle = angle
         lEnn.state = ESTATES.GARDE
     elseif lEnn.state == ESTATES.ATTACK then
-        lEnn.angle = math.angle(lEnn.x, lEnn.y, lTank.x, lTank.y)
+        lEnn.angle = math.angle(lEnn.x, lEnn.y, myTank.x, myTank.y)
         lEnn.vx = 0
         lEnn.vy = 0
         enn.tTime = enn.tTime + (6*dt)
-        if math.dist(lEnn.x,lEnn.y,lTank.x,lTank.y) >= 200 then
+        if math.dist(lEnn.x,lEnn.y,myTank.x,myTank.y) >= 200 then
             lEnn.state = ESTATES.APPROCHE
         end
         if enn.tTime >= enn.tDuration then
@@ -170,12 +170,12 @@ function enn.UpdateEnn(lEnn,lTank,dt)
             enn.creerTir(lEnn)
         end
     elseif lEnn.state == ESTATES.APPROCHE then
-        if math.dist(lEnn.x,lEnn.y,lTank.x,lTank.y) >= 400 then
+        if math.dist(lEnn.x,lEnn.y,myTank.x,myTank.y) >= 400 then
             lEnn.state = ESTATES.GARDE
-        elseif math.dist(lEnn.x,lEnn.y,lTank.x,lTank.y) < 200 then
+        elseif math.dist(lEnn.x,lEnn.y,myTank.x,myTank.y) < 200 then
             lEnn.state = ESTATES.ATTACK
         end
-        lEnn.angle = math.angle(lEnn.x, lEnn.y, lTank.x, lTank.y)
+        lEnn.angle = math.angle(lEnn.x, lEnn.y, myTank.x, myTank.y)
         lEnn.vx = lEnn.speed * math.cos(lEnn.angle)
         lEnn.vy = lEnn.speed * math.sin(lEnn.angle)
     end
