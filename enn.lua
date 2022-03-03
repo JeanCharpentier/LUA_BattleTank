@@ -1,4 +1,6 @@
 local mySystem  = require("system")
+local myTank = require("tank")
+local myMainMenu = require("mainmenu")
 
 ---------------Gestion des ennemis -------------
 local enn = {}
@@ -14,10 +16,6 @@ local imgTir = love.graphics.newImage("images/bulletRed2.png")
 ---- Timer tirs ----
 local tDuration = 2
 local tTime = 0
-
----- Position du tank ----
-local myTank = require("tank")
---local tank = {}
 
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
@@ -41,7 +39,6 @@ end
  ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
 ]]
 function enn.Update(dt)
-    --tank = myTank.getInfos()
     print(tostring(myTank.x))
     for i=#ennListe,1,-1 do
         local ennemi = ennListe[i]
@@ -69,7 +66,12 @@ function enn.Update(dt)
         ---- Collisions Tank ----
         if math.dist(monBoulet.x, monBoulet.y, myTank.x, myTank.y) < 30 then
             table.remove(ennTirs, i)
-            myTank.vie = myTank.vie - 10
+            if myTank.vie >= 10 then
+                myTank.vie = myTank.vie - 10
+            else
+                mySystem.gameOver(myTank,ennTirs,ennListe)
+                myMainMenu.state = true
+            end
         end
     end
 end

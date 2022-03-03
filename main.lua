@@ -30,7 +30,6 @@ function love.load()
     myMainMenu.Load()
     myGame.Load()
     myTank.Load()
-    myEnn.Load()
 end
 --[[
 ██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗
@@ -42,7 +41,7 @@ end
 ]]
 function love.update(dt)
     if myMainMenu.state then -- Si le menu est activé on l'update
-        myMainMenu.Update(dt)
+        myMainMenu.Update(dt,myEnn)
     else -- Sinon on update la boucle de jeu
         myGame.Update(dt)
         myTank.Update(dt)

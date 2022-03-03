@@ -6,6 +6,8 @@ local V_OFFSET = 400
 local btnFrames = {love.graphics.newImage("images/UI/green_button01.png"), love.graphics.newImage("images/UI/green_button00.png")}
 local buttons = {}
 
+mainmenu.state = true
+
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
 ██║     ██╔═══██╗██╔══██╗██╔══██╗
@@ -15,7 +17,6 @@ local buttons = {}
 ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
 ]]
 function mainmenu.Load()
-    mainmenu.state = true
 
     table.insert(buttons, mainmenu.addButton("Play"))
     table.insert(buttons, mainmenu.addButton("Quit"))
@@ -34,7 +35,7 @@ end
 ╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗
  ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
 ]]
-function mainmenu.Update(dt)
+function mainmenu.Update(dt,lEnn)
 
     local mouseX = love.mouse.getX()
     local mouseY = love.mouse.getY()
@@ -46,8 +47,9 @@ function mainmenu.Update(dt)
             if love.mouse.isDown(1) then
                 if i == 1 then
                     mainmenu.state = false -- Lance le jeu si bouton Play
+                    lEnn.Load() -- Création d'une nouvelle table d'ennemis
                 elseif i == 2 then
-                    local quit = love.event.quit()
+                    local quit = love.event.quit() -- Quitte le jeu
                 end
             end
        else

@@ -1,4 +1,5 @@
 local mySystem = require("system")
+local myCol = require("game")
 
 ---- Tank -----
 local tank = {}
@@ -8,7 +9,7 @@ local canBoost = true
 local isBoost = false
 local tourelle = {}
 
-tank = {x=100,y=100,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100,vie=100}
+tank = {x=200,y=200,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100,vie=100}
 
 ---- Boulets et Tirs ----
 local imgTir = {love.graphics.newImage("images/bulletsDouble.png"),love.graphics.newImage("images/bulletRed2.png")}
@@ -35,8 +36,6 @@ local reloadingMask = love.graphics.newImage("images/UI/blue_button13.png")
 ---- Reload ----
 local timeReload = 10
 local canShoot = true
-
-local myCol = require("game")
 
 ---- Fonctions ----
 --[[

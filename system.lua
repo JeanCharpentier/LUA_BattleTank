@@ -61,4 +61,21 @@ function system.Explosion(lx,ly) -- Créer une explosion
     return explo
 end
 
+function system.gameOver(lTank,lTirs,lEnn)
+    print("Game Over !")
+    lTank.vie = 100
+    lTank.power = 100
+    lTank.x = 200
+    lTank.y = 200
+    lTank.angle = 0
+    lTank.vx = 0
+    lTank.vy = 0
+    for n=#lTirs,1,-1 do
+        table.remove(lTirs,n)
+    end
+    for n=#lEnn,1,-1 do
+        table.remove(lEnn,n)
+    end
+end
+
 return system
