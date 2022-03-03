@@ -1,4 +1,4 @@
-local system = {}
+system = {}
 
 system.PI = math.pi
 
@@ -61,7 +61,7 @@ function system.Explosion(lx,ly) -- Créer une explosion
     return explo
 end
 
-function system.resetGame(lTank,lTirs,lEnn)
+function system.resetGame(lTank,lEnn)
     -- Reset Tank
     lTank.vie = 100
     lTank.power = 100
@@ -74,8 +74,8 @@ function system.resetGame(lTank,lTirs,lEnn)
         table.remove(lTank.tirs,n)
     end
     -- Reset ennemis et leurs tirs en cours
-    for n=#lTirs,1,-1 do
-        table.remove(lTirs,n)
+    for n=#lEnn.ennTirs,1,-1 do
+        table.remove(lEnn.ennTirs,n)
     end
     for n=#lEnn,1,-1 do
         table.remove(lEnn,n)

@@ -59,7 +59,7 @@ function enn.Update(dt)
                 myTank.vie = myTank.vie - 10
             else
                 myMainMenu.state = true
-                mySystem.resetGame(myTank,ennTirs,ennListe)
+                --mySystem.resetGame(myTank,ennListe)
                 myMainMenu.condition = "defaite"
             end
             table.remove(ennTirs, i)
@@ -73,7 +73,7 @@ function enn.Update(dt)
     ---- Si plus d'ennemis à l'écran ---
     if #ennListe == 0 and (not myMainMenu.state) then
         myMainMenu.state = true
-        mySystem.resetGame(myTank,ennTirs,ennListe)
+        --mySystem.resetGame(myTank,ennListe)
         myMainMenu.condition = "victoire"
     end
 end

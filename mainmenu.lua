@@ -7,7 +7,7 @@ local btnFrames = {love.graphics.newImage("images/UI/green_button01.png"), love.
 local buttons = {}
 
 mainmenu.state = true
-mainmenu.condition = ""
+mainmenu.condition = nil
 
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
@@ -36,7 +36,7 @@ end
 ╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗
  ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
 ]]
-function mainmenu.Update(dt,lEnn)
+function mainmenu.Update(dt,lEnn,lTank,lSystem)
 
     local mouseX = love.mouse.getX()
     local mouseY = love.mouse.getY()
@@ -47,6 +47,9 @@ function mainmenu.Update(dt,lEnn)
             buttons[i].imgBase = btnFrames[2]
             if love.mouse.isDown(1) then
                 if i == 1 then
+                    if mainmenu.condition ~= nil then
+                        lSystem.resetGame(lTank,lEnn)
+                    end
                     mainmenu.state = false -- Lance le jeu si bouton Play
                     lEnn.Load() -- Création d'une nouvelle table d'ennemis
                 elseif i == 2 then
@@ -68,7 +71,10 @@ end
 ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ 
 ]]
 function mainmenu.Draw()
-    love.graphics.printf(mainmenu.condition,mySystem.LARGEUR/2,100,400,"center")
+    if mainmenu.condition ~= nil then
+        love.graphics.printf(mainmenu.condition,mySystem.LARGEUR/2,100,400,"center")
+    end
+    
     for i=1,#buttons,1 do
         local btn = buttons[i]
         love.graphics.draw(btn.imgBase, btn.x,btn.y)
