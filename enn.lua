@@ -59,11 +59,11 @@ function enn.Update(dt)
                 myTank.vie = myTank.vie - 10
             else
                 myMainMenu.state = true
-                mySystem.gameOver(myTank,ennTirs,ennListe)
+                mySystem.resetGame(myTank,ennTirs,ennListe)
                 myMainMenu.condition = "defaite"
             end
             table.remove(ennTirs, i)
-        else -- Sinon on update simplement
+        else -- Sinon on update normalement
             local vx = monBoulet.speed * math.cos(monBoulet.angle)
             local vy = monBoulet.speed * math.sin(monBoulet.angle)
             monBoulet.x = ennTirs[i].x + (vx * dt)
@@ -73,7 +73,7 @@ function enn.Update(dt)
     ---- Si plus d'ennemis à l'écran ---
     if #ennListe == 0 and (not myMainMenu.state) then
         myMainMenu.state = true
-        mySystem.gameOver(myTank,ennTirs,ennListe)
+        mySystem.resetGame(myTank,ennTirs,ennListe)
         myMainMenu.condition = "victoire"
     end
 end

@@ -61,7 +61,8 @@ function system.Explosion(lx,ly) -- Créer une explosion
     return explo
 end
 
-function system.gameOver(lTank,lTirs,lEnn)
+function system.resetGame(lTank,lTirs,lEnn)
+    -- Reset Tank
     lTank.vie = 100
     lTank.power = 100
     lTank.x = 200
@@ -72,7 +73,7 @@ function system.gameOver(lTank,lTirs,lEnn)
     for n=#lTank.tirs,1,-1 do
         table.remove(lTank.tirs,n)
     end
-    
+    -- Reset ennemis et leurs tirs en cours
     for n=#lTirs,1,-1 do
         table.remove(lTirs,n)
     end
