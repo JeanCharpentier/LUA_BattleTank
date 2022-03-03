@@ -1,6 +1,5 @@
-local mainmenu = {}
+mainmenu = {}
 
-local mySystem = require("system")
 local V_OFFSET = 400
 
 local btnFrames = {love.graphics.newImage("images/UI/green_button01.png"), love.graphics.newImage("images/UI/green_button00.png")}
@@ -36,7 +35,7 @@ end
 ╚██████╔╝██║     ██████╔╝██║  ██║   ██║   ███████╗
  ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
 ]]
-function mainmenu.Update(dt,lEnn,lTank,lSystem)
+function mainmenu.Update(dt,lEnn,lTank)
 
     local mouseX = love.mouse.getX()
     local mouseY = love.mouse.getY()
@@ -48,7 +47,7 @@ function mainmenu.Update(dt,lEnn,lTank,lSystem)
             if love.mouse.isDown(1) then
                 if i == 1 then
                     if mainmenu.condition ~= nil then
-                        lSystem.resetGame(lTank,lEnn)
+                        mySystem.resetGame(lTank,lEnn)
                     end
                     mainmenu.state = false -- Lance le jeu si bouton Play
                     lEnn.Load() -- Création d'une nouvelle table d'ennemis

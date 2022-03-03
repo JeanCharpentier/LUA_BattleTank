@@ -61,24 +61,24 @@ function system.Explosion(lx,ly) -- Créer une explosion
     return explo
 end
 
-function system.resetGame(lTank,lEnn)
+function system.resetGame()
     -- Reset Tank
-    lTank.vie = 100
-    lTank.power = 100
-    lTank.x = 200
-    lTank.y = 200
-    lTank.angle = 0
-    lTank.vx = 0
-    lTank.vy = 0
-    for n=#lTank.tirs,1,-1 do
-        table.remove(lTank.tirs,n)
+    myTank.vie = 100
+    myTank.power = 100
+    myTank.x = 200
+    myTank.y = 200
+    myTank.angle = 0
+    myTank.vx = 0
+    myTank.vy = 0
+    for n=#myTank.tirs,1,-1 do
+        table.remove(myTank.tirs,n)
     end
     -- Reset ennemis et leurs tirs en cours
-    for n=#lEnn.ennTirs,1,-1 do
-        table.remove(lEnn.ennTirs,n)
+    for n=#myEnn.ennTirs,1,-1 do
+        table.remove(myEnn.ennTirs,n)
     end
-    for n=#lEnn,1,-1 do
-        table.remove(lEnn,n)
+    for n=#myEnn.ennListe,1,-1 do
+        table.remove(myEnn.ennListe,n)
     end
 end
 

@@ -9,11 +9,11 @@ io.stdout:setvbuf("no")
 
 --------------------------------------------------------------------------
 
-local mySystem = require("system")
-local myGame = require("game")
-local myTank = require("tank")
-local myEnn = require("enn")
-local myMainMenu = require("mainmenu")
+mySystem = require("system")
+myGame = require("game")
+myTank = require("tank")
+myEnn = require("enn")
+myMainMenu = require("mainmenu")
 
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 

@@ -1,6 +1,4 @@
-local mySystem = require("system")
-
-local Game = {}
+Game = {}
 
 ---- Maps ----
 

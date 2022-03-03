@@ -1,6 +1,3 @@
-local mySystem = require("system")
-local myCol = require("game")
-
 ---- Tank -----
 local tank = {}
 local MAX_SPEED = 80
@@ -124,14 +121,14 @@ function tank.Update(dt)
     local cc, col
     for cl=1,mySystem.MAP_HEIGHT,1 do
         for cc=1,mySystem.MAP_WIDTH,1 do
-            local id = myCol.colMap[cl][cc]
+            local id = myGame.colMap[cl][cc]
             local vx = tank.s * math.cos(tank.angle)
             local vy = tank.s * math.sin(tank.angle)
             local tx = (cc-1)*mySystem.TILE_WIDTH -- Position selon la taille de la tuile et son emplacement dans la grille
             local ty = (cl-1)*mySystem.TILE_HEIGHT
             if id ~= 0 and id ~= 1 then -- Si on touche un arbre ou une caisse, on la détruit
                 if mySystem.CheckCollisions(tank.x-20,tank.y-20,40,40,tx-20,ty-20,40,40) then
-                    myCol.colMap[cl][cc] = 0
+                    myGame.colMap[cl][cc] = 0
                     table.insert(explos, mySystem.Explosion(tx, ty))
                 end
             end
