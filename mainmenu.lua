@@ -83,10 +83,6 @@ function mainmenu.addButton(ltexte)
 
 end
 
-function mainmenu.startGame()
-    
-end
-
 --------- RETURN ---------
 
 return mainmenu

@@ -8,13 +8,15 @@ local canBoost = true
 local isBoost = false
 local tourelle = {}
 
+tank = {x=100,y=100,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100,vie=100}
+
 ---- Boulets et Tirs ----
 local imgTir = {"images/bulletsDouble.png","images/bulletRed2.png"}
 local tirs = {}
 
 ---- Explosions ----
 local explos = {}
-local exploSprites = {"images/explo/explosion1.png","images/explo/explosion2.png","images/explo/explosion3.png","images/explo/explosion4.png","images/explo/explosion5.png"}
+local EXPLOSPRITES = {"images/explo/explosion1.png","images/explo/explosion2.png","images/explo/explosion3.png","images/explo/explosion4.png","images/explo/explosion5.png"}
 
 ---- Curseur Souris ----
 local mouseX = 0
@@ -40,13 +42,9 @@ local myCol = require("game")
 ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
 ]]
 function tank.Load()
-
     ---- Chargement et création du tank + tourelle ----
-    tank = {x=largeur/4,y=hauteur/2,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100}
+    --tank = {x=largeur/4,y=hauteur/2,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100,vie=100}
     tourelle = {x=tank.x,y=tank.y,angle=0,imgBase=love.graphics.newImage("images/specialBarrel1.png")}
-
-    ---- Chargement images HUD ----
-
 end
 
 --[[
@@ -97,14 +95,23 @@ function tank.Update(dt)
         local vy = monBoulet.speed * math.sin(monBoulet.angle)
         monBoulet.x = tirs[i].x + (vx * dt)
         monBoulet.y = tirs[i].y + (vy * dt)
+        
+        if isOutsideScreen(monBoulet) then
+            table.remove(tirs, i)
+        end
 
         ---- Collisions Ennemis ----
         for n=#ennemis,1,-1 do
             local monEnnemi = ennemis[n]
             if math.dist(monBoulet.x, monBoulet.y, monEnnemi.x, monEnnemi.y) < (monEnnemi.imgBase:getWidth()/2) then
                 table.insert(explos,Explosion(monBoulet.x,monBoulet.y))
-                table.remove(ennemis, n)
-                table.remove(tirs, i)
+                if (monEnnemi.vie - monBoulet.degats) > 0 then
+                    monEnnemi.vie = monEnnemi.vie - monBoulet.degats
+                    table.remove(tirs, i)
+                else
+                    table.remove(ennemis, n)
+                    table.remove(tirs, i)
+                end
             end
         end
     end
@@ -141,7 +148,7 @@ function tank.Update(dt)
         local frame = explos[n].frames
         local myTime = explos[n].time + (10 * dt)
         explos[n].time = myTime
-        if explos[n].time <= #exploSprites then
+        if explos[n].time <= #EXPLOSPRITES then
             explos[n].frames = math.floor(explos[n].time)
         else
             table.remove(explos,n)
@@ -183,7 +190,7 @@ function tank.Draw()
     
     ---- Affichage Explosions ----
     for i=1,#explos,1 do
-        local imgExplo = love.graphics.newImage(exploSprites[explos[i].frames])
+        local imgExplo = love.graphics.newImage(EXPLOSPRITES[explos[i].frames])
         love.graphics.draw(imgExplo, explos[i].x, explos[i].y,explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
     end
 
@@ -194,36 +201,53 @@ function tank.Draw()
     love.graphics.rectangle("fill", 100, hauteur - (reloadingMask:getHeight() + 10), (tank.power * reloadingMask:getWidth()) / 100, reloadingMask:getHeight())
     love.graphics.draw(reloadingMask, 100, hauteur - (reloadingMask:getHeight() + 10))
 
+    ---- Affichage Vie ----
+    love.graphics.setColor(0,255,0,0.5)
+    love.graphics.rectangle("fill",tank.x-20,tank.y-40,tank.vie,7)
+    love.graphics.setColor(255,255,255,1)
+
 
     --- DEBUG ---
-    local vx = tank.s * math.cos(tank.angle)
+    --[[local vx = tank.s * math.cos(tank.angle)
     local vy = tank.s * math.sin(tank.angle)
     love.graphics.line(tank.x + (vx/2), tank.y + (vy/2),tank.x,tank.y)
     love.graphics.print("VALUE:"..tostring(math.dist(tank.x + (vx/2), tank.y + (vy/2),tank.x,tank.y)))
+    ]]
 end
 
+--[[
+███████╗ ██████╗ ███╗   ██╗ ██████╗████████╗██╗ ██████╗ ███╗   ██╗███████╗
+██╔════╝██╔═══██╗████╗  ██║██╔════╝╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+█████╗  ██║   ██║██╔██╗ ██║██║        ██║   ██║██║   ██║██╔██╗ ██║███████╗
+██╔══╝  ██║   ██║██║╚██╗██║██║        ██║   ██║██║   ██║██║╚██╗██║╚════██║
+██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
+╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+]]
 function tank.creerTir(type) -- Créer un boulet selon son type et l'ajouter a la liste "tirs"
     local boulet = {}
     local ang = 0
     local s = 0
+    local d = 0
     if type == 2 then
         ang = tourelle.angle
         s = 100
+        d = 10
     elseif type == 1 then
         ang = tank.angle
         s = 500
+        d = 5
     end
-    boulet = {x=tank.x,y=tank.y,imgBase=love.graphics.newImage(imgTir[type]),angle=ang,type=type,speed=s}
+    boulet = {x=tank.x,y=tank.y,imgBase=love.graphics.newImage(imgTir[type]),angle=ang,type=type,speed=s,degats=d}
     table.insert(tirs,boulet)
     return boulet
 end
 
-function tank.getPos() -- Renvoi la position du Tank aux ennemis
-    local tankPos = {x=tank.x,y=tank.y}
+function tank.getInfos() -- Renvoi la position et la vie du Tank aux ennemis
+    local tankPos = {x=tank.x,y=tank.y,vie=tank.vie}
     return tankPos
 end
 
-function tank.boost()
+function tank.boost() -- Lance le boost
     if canBoost then
         tank.s = MAX_SPEED * BOOST
         canBoost = false
