@@ -8,13 +8,13 @@ io.stdout:setvbuf("no")
 
 
 --------------------------------------------------------------------------
-require("system") -- "Librairie" perso
---require("mainmenu")
 
+local mySystem = require("system")
 local myGame = require("game")
 local myTank = require("tank")
 local myEnn = require("enn")
 local myMainMenu = require("mainmenu")
+
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
 ██║     ██╔═══██╗██╔══██╗██╔══██╗
@@ -24,12 +24,8 @@ local myMainMenu = require("mainmenu")
 ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
 ]]
 function love.load()
-    love.window.setMode(1280,720)
-
-    largeur = love.graphics.getWidth()
-    hauteur = love.graphics.getHeight()
-
-    math.randomseed(os.time()) -- Reset de la graine du Random
+    
+    mySystem.Load()
 
     myMainMenu.Load()
     myGame.Load()
@@ -62,7 +58,7 @@ end
 ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ 
 ]]
 function love.draw()
-    love.graphics.setFont(DEFAULT_FONT)
+    love.graphics.setFont(mySystem.DEFAULT_FONT)
     if myMainMenu.state then -- Si le menu est activé on l'affiche
         myMainMenu.Draw()
     else -- Sinon on affiche le jeu
