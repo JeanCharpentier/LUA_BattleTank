@@ -84,9 +84,14 @@ end
 
 function love.mousepressed(x, y, button, istouch)    
     if button == 1 then -- Mitrailleuse
-        myTank.creerTir(1)
+        if myTank.state == "single" then
+            myTank.creerTir(1)
+        end
     end
-    if button == 2 then -- Canon
+    --[[if button == 2 then -- Tourelle
         myTank.creerTir(2)
-    end
+    end]]
+ end
+
+ function love.mousereleased(x,y,button,istouch)
  end

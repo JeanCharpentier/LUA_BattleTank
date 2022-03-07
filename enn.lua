@@ -105,10 +105,6 @@ end
 ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 ]]
 
-function enn.getListe()
-    return enn.ennListe
-end
-
 function enn.rmEnnemi(ln)
     table.remove(enn.ennListe,ln)
 end

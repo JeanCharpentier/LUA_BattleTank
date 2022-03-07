@@ -12,6 +12,21 @@ tank = {x=200,y=200,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarg
 local imgTir = {love.graphics.newImage("images/bulletsDouble.png"),love.graphics.newImage("images/bulletRed2.png"),love.graphics.newImage("images/bulletDark3.png")}
 tank.tirs = {}
 
+---- Timer mitrailleuse ----
+local tmFireRate = 0.2
+local tmTimer = 0
+local TMSTATES = {SINGLE="single",BURST="burst",FULL="full",ENDBURST="endburst"}
+tank.state = TMSTATES.SINGLE
+local nbTirs = 3
+
+local tbFireRate = 2
+local tbTimer = 3
+
+---- Timer Tourelle ---
+local ttFireRate = 4
+local ttTimer = 0
+local ttCanShoot = true
+
 ---- Explosions ----
 tank.explos = {}
 local EXPLOSPRITES = {
@@ -50,12 +65,20 @@ end
 ]]
 
 function tank.Update(dt)
-    
+    --[[                                                              
+  ####   ####  #    # ##### #####   ####  #      #      ######  ####  
+ #    # #    # ##   #   #   #    # #    # #      #      #      #      
+ #      #    # # #  #   #   #    # #    # #      #      #####   ####  
+ #      #    # #  # #   #   #####  #    # #      #      #           # 
+ #    # #    # #   ##   #   #   #  #    # #      #      #      #    # 
+  ####   ####  #    #   #   #    #  ####  ###### ###### ######  ####  
+]]
+
     ---- Rotation tourelle ----
     mouseX,mouseY = love.mouse.getPosition()
     tourelle.angle = math.atan2(mouseY - tank.y, mouseX - tank.x) -- Angle de la tourelle vers le curseur de la souris
 
-    ---- CONTROLLES ----
+    ---- Clavier ----
     if love.keyboard.isDown("s") then
         local vx = tank.s * math.cos(tank.angle)
         local vy = tank.s * math.sin(tank.angle)
@@ -77,10 +100,63 @@ function tank.Update(dt)
         tank.angle = tank.angle + (1 * dt)
     end
 
+    ---- Mitrailleuse ----
+    tank.mStates(dt)
+    if love.mouse.isDown(1) then -- Tir mitrailleuse
+        if tank.state == TMSTATES.FULL then
+            tmTimer = tmTimer - dt
+            if tmTimer <= 0 then
+                tank.creerTir(1)
+                tmTimer = tmFireRate
+            end
+        end
+        if tank.state == TMSTATES.BURST then
+            tmTimer = tmTimer - dt
+            if tmTimer <= 0 then
+                if nbTirs > 0 then
+                    tank.creerTir(1)
+                    tmTimer = tmFireRate
+                    nbTirs = nbTirs - 1
+                else
+                    nbTirs = 3
+                    tank.state = TMSTATES.ENDBURST
+                end
+            end
+        end
+    else
+        tmTimer = tmFireRate        
+    end
+
+    ---- Tourelle ----
+    if love.mouse.isDown(2) then
+        ttTimer = ttTimer - dt
+        if ttCanShoot == true then
+            tank.creerTir(2)
+            ttCanShoot = false            
+        end
+    else
+        if ttCanShoot == false then
+            ttTimer = ttTimer - dt
+            if ttTimer <= 0 then
+                ttCanShoot = true
+                ttTimer = ttFireRate
+            end
+        else
+            ttTimer = ttFireRate
+        end
+    end
+
+        --[[          
+ ##### # #####   ####  
+   #   # #    # #      
+   #   # #    #  ####  
+   #   # #####       # 
+   #   # #   #  #    # 
+   #   # #    #  ####  
+]]
     ---- Mouvements Boulets ----
-    local ennListe = require("enn")
     local ennemis = {}
-    ennemis = ennListe.getListe()
+    ennemis = myEnn.ennListe
 
     for i=#tank.tirs,1,-1 do
         local monBoulet = tank.tirs[i]
@@ -114,7 +190,14 @@ function tank.Update(dt)
             end
         end
     end
-
+--[[                                             
+  ####   ####  #         #####  ######  ####   ####  #####  
+ #    # #    # #         #    # #      #    # #    # #    # 
+ #      #    # #         #    # #####  #      #    # #    # 
+ #      #    # #         #    # #      #      #    # #####  
+ #    # #    # #         #    # #      #    # #    # #   #  
+  ####   ####  ######    #####  ######  ####   ####  #    # 
+]]
     ---- Collisions Décors ----
     local cc, col
     for cl=1,mySystem.MAP_HEIGHT,1 do
@@ -144,6 +227,15 @@ function tank.Update(dt)
         end
     end
     
+
+    --[[                                  
+   ##   #    # ##### #####  ######  ####  
+  #  #  #    #   #   #    # #      #      
+ #    # #    #   #   #    # #####   ####  
+ ###### #    #   #   #####  #           # 
+ #    # #    #   #   #   #  #      #    # 
+ #    #  ####    #   #    # ######  ####  
+    ]]
     ---- Animations Explosions ----
     for n=#tank.explos,1,-1 do
         local frame = tank.explos[n].frames
@@ -195,7 +287,7 @@ function tank.Draw()
         love.graphics.draw(imgExplo, tank.explos[i].x, tank.explos[i].y,tank.explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
     end
 
-    ---- Affichage HUD ----
+    ---- Affichage Main HUD ----
     love.graphics.draw(mySystem.MAIN_HUD,0,0)
 
     ---- Affichage BOOST ----
@@ -207,7 +299,7 @@ function tank.Draw()
 
     ---- Affichage Reload ----
     love.graphics.setColor(0,0,255,1)
-    love.graphics.rectangle("fill", 300, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10), (tank.power * mySystem.LOADING_MASK:getWidth()) / 100, mySystem.LOADING_MASK:getHeight())
+    love.graphics.rectangle("fill", 300, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10), (ttTimer * mySystem.LOADING_MASK:getWidth())/4, mySystem.LOADING_MASK:getHeight())
     love.graphics.setColor(255,255,255,1)
     love.graphics.draw(mySystem.LOADING_MASK, 300, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10))
     myUI.Print("Reloading",0,0,0,1,274+(mySystem.LOADING_MASK:getWidth()/2),mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() * 1.5),300,"center",0,0.3,0.3,0,0,0,0)
@@ -219,11 +311,7 @@ function tank.Draw()
 
 
     --- DEBUG ---
-    --[[local vx = tank.s * math.cos(tank.angle)
-    local vy = tank.s * math.sin(tank.angle)
-    love.graphics.line(tank.x + (vx/2), tank.y + (vy/2),tank.x,tank.y)
-    love.graphics.print("VALUE:"..tostring(math.dist(tank.x + (vx/2), tank.y + (vy/2),tank.x,tank.y)))
-    ]]
+    --love.graphics.print("VALUE:"..tostring(ttTimer))
 end
 
 --[[
@@ -234,28 +322,45 @@ end
 ██║     ╚██████╔╝██║ ╚████║╚██████╗   ██║   ██║╚██████╔╝██║ ╚████║███████║
 ╚═╝      ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 ]]
+
+function tank.mStates(dt) -- States Machine Mitrailleuse
+    if love.keyboard.isDown("f1") then
+        tank.state = TMSTATES.SINGLE
+    elseif love.keyboard.isDown("f2") then
+        tank.state = TMSTATES.BURST
+    elseif love.keyboard.isDown("f3") then
+        tank.state = TMSTATES.FULL
+    end
+    if tank.state == TMSTATES.ENDBURST then
+        tbTimer = tbTimer - dt
+        if tbTimer <= 0 then
+            tank.state = TMSTATES.BURST
+            tbTimer = tbFireRate
+        end
+    end
+end
+
 function tank.creerTir(type,ang,parent) -- Créer un boulet selon son type et l'ajouter a la liste "tirs"
     local boulet = {}
     local s = 0
     local d = 0
     local bx = 0
     local by = 0
-
     if ang == nil then
         ang = 0
     end
-    if type == 2 then
+    if type == 2 then -- Tir tourelle avant dispersion
         ang = tourelle.angle
         s = 100
         d = 50
         bx = tank.x
         by = tank.y
-    elseif type == 3 then
+    elseif type == 3 then -- Dispersion Tir Tourelle
         s = 500
         d = 2
         bx = parent.x
         by = parent.y
-    elseif type == 1 then
+    elseif type == 1 then -- Mitrailleuse
         ang = tank.angle
         s = 500
         d = 5
@@ -267,9 +372,9 @@ function tank.creerTir(type,ang,parent) -- Créer un boulet selon son type et l'
     return boulet
 end
 
-function tank.spray(lBoulet)
+function tank.spray(lBoulet) -- Fragmentation du tir de la tourelle
     for i=(mySystem.PI/4),((2 * mySystem.PI) - (mySystem.PI/4)),0.6 do
-        tank.creerTir(3,math.atan(math.cos(i))+lBoulet.angle,lBoulet)
+        tank.creerTir(3,math.atan(math.cos(i))+lBoulet.angle,lBoulet) -- Merci l'animation du cercle trigo !!!
     end
 end
 

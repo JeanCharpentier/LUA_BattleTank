@@ -1,3 +1,7 @@
+--[[
+    Fonts commentaires : Banner, ANSI Shadows
+]]
+
 system = {}
 
 system.PI = math.pi
