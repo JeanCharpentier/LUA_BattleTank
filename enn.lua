@@ -121,7 +121,7 @@ function enn.creerTir(lEnn) -- Créer un boulet et l'ajouter a la liste "tirs"
     return boulet
 end
 
-function enn.creerEnn()
+function enn.creerEnn() -- Créer un ennemi à une position aléatoire sur la moitié droite de l'écran
     local lx = math.random(mySystem.LARGEUR/2,mySystem.LARGEUR-200)
     local ly = math.random(200, mySystem.HAUTEUR-200)
     local ennemi = {}
