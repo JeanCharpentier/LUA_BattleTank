@@ -346,6 +346,7 @@ function tank.creerTir(type,ang,parent) -- Créer un boulet selon son type et l'
     local d = 0
     local bx = 0
     local by = 0
+    local sound = nil
     if ang == nil then
         ang = 0
     end
@@ -355,19 +356,23 @@ function tank.creerTir(type,ang,parent) -- Créer un boulet selon son type et l'
         d = 50
         bx = tank.x
         by = tank.y
+        sound = mySounds.sndTirT
     elseif type == 3 then -- Dispersion Tir Tourelle
         s = 500
         d = 2
         bx = parent.x
         by = parent.y
+        sound = mySounds.sndSpray
     elseif type == 1 then -- Mitrailleuse
         ang = tank.angle
         s = 500
         d = 5
         bx = tank.x
         by = tank.y
+        sound = mySounds.sndTirM
     end
     boulet = {x=bx,y=by,imgBase=imgTir[type],angle=ang,type=type,speed=s,degats=d}
+    mySounds.PlaySound(sound)
     table.insert(tank.tirs,boulet)
     return boulet
 end

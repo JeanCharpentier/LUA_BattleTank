@@ -15,6 +15,7 @@ myTank = require("tank")
 myEnn = require("enn")
 myMainMenu = require("mainmenu")
 myUI = require("ui")
+mySounds = require("sounds")
 
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
