@@ -19,8 +19,8 @@ local TMSTATES = {SINGLE="single",BURST="burst",FULL="full",ENDBURST="endburst"}
 tank.state = TMSTATES.SINGLE
 local nbTirs = 3
 
-local tbFireRate = 2
-local tbTimer = 3
+local tbFireRate = 0.1
+local tbTimer = 1
 
 ---- Timer Tourelle ---
 local ttFireRate = 4
@@ -370,9 +370,10 @@ function tank.creerTir(type,ang,parent) -- Créer un boulet selon son type et l'
         bx = tank.x
         by = tank.y
         sound = mySounds.sndTirM
+        sound:stop()
     end
     boulet = {x=bx,y=by,imgBase=imgTir[type],angle=ang,type=type,speed=s,degats=d}
-    mySounds.PlaySound(sound)
+    sound:play()
     table.insert(tank.tirs,boulet)
     return boulet
 end

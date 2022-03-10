@@ -66,6 +66,8 @@ function system.Explosion(lx,ly) -- Créer une explosion
     explo.frames = 1
     explo.angle = math.random(0,2*system.PI)
     explo.time = 1
+    mySounds.sndExplo:stop()
+    mySounds.sndExplo:play()
     return explo
 end
 
