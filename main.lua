@@ -32,6 +32,9 @@ function love.load()
     myMainMenu.Load()
     myGame.Load()
     myTank.Load()
+
+    --mySounds.Load()
+
 end
 --[[
 ██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗

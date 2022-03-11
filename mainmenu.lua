@@ -50,6 +50,8 @@ function mainmenu.Update(dt)
                         mySystem.resetGame()
                     end
                     mainmenu.state = false -- Lance le jeu si bouton Play
+                    mySounds.Music:setLooping(true)
+                    mySounds.Music:play()
                     myEnn.Load() -- Création d'une nouvelle table d'ennemis
                 elseif i == 2 then
                     local quit = love.event.quit() -- Quitte le jeu

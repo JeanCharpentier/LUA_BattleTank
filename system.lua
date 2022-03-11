@@ -93,6 +93,8 @@ function system.resetGame()
     for n=#myEnn.ennListe,1,-1 do
         table.remove(myEnn.ennListe,n)
     end
+    mySounds.Music:setLooping(true)
+    mySounds.Music:play()
 end
 
 return system
