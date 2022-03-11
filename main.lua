@@ -32,9 +32,6 @@ function love.load()
     myMainMenu.Load()
     myGame.Load()
     myTank.Load()
-
-    --mySounds.Load()
-
 end
 --[[
 ██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗
@@ -62,7 +59,7 @@ end
 ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝ 
 ]]
 function love.draw()
-    love.graphics.setFont(mySystem.DEFAULT_FONT)
+    love.graphics.setFont(ui.DEFAULT_FONT)
     if myMainMenu.state then -- Si le menu est activé on l'affiche
         myMainMenu.Draw()
     else -- Sinon on affiche le jeu
@@ -92,9 +89,6 @@ function love.mousepressed(x, y, button, istouch)
             myTank.creerTir(1)
         end
     end
-    --[[if button == 2 then -- Tourelle
-        myTank.creerTir(2)
-    end]]
  end
 
  function love.mousereleased(x,y,button,istouch)

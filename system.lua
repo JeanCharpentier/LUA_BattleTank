@@ -11,12 +11,6 @@ system.MAP_HEIGHT = 11
 system.TILE_WIDTH = 64
 system.TILE_HEIGHT = 64
 
-system.DEFAULT_FONT = love.graphics.newFont("fonts/kenvector_future.ttf",40)
-
----- Interface ----
-system.MAIN_HUD = love.graphics.newImage("images/UI/mainHUD.png")
-system.LOADING_MASK = love.graphics.newImage("images/UI/blue_button13.png")
-
 function system.Load()
     love.window.setMode(1280,720)
 

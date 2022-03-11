@@ -1,6 +1,6 @@
 ---- Tank -----
 local tank = {}
-local MAX_SPEED = 80
+local MAX_SPEED = 200
 local BOOST = 3
 local canBoost = true
 local isBoost = false
@@ -288,30 +288,30 @@ function tank.Draw()
     end
 
     ---- Affichage Main HUD ----
-    love.graphics.draw(mySystem.MAIN_HUD,0,0)
+    love.graphics.draw(ui.MAIN_HUD,0,0)
 
     ---- Affichage BOOST ----
-    love.graphics.setColor(0,255,0,1)
-    love.graphics.rectangle("fill", 100, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10), (tank.power * mySystem.LOADING_MASK:getWidth()) / 100, mySystem.LOADING_MASK:getHeight())
-    love.graphics.setColor(255,255,255,1)
-    love.graphics.draw(mySystem.LOADING_MASK, 100, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10))
-    myUI.Print("Power",0,0,0,1,90+(mySystem.LOADING_MASK:getWidth()/2),mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() * 1.5),300,"center",0,0.3,0.3,0,0,0,0)
+    love.graphics.setColor(0,1,0,0.8)
+    love.graphics.rectangle("fill", 100, mySystem.HAUTEUR - (ui.LOADING_MASK:getHeight() + 10), (tank.power * ui.LOADING_MASK:getWidth()) / 100, ui.LOADING_MASK:getHeight())
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.draw(ui.LOADING_MASK, 100, mySystem.HAUTEUR - (ui.LOADING_MASK:getHeight() + 10))
+    myUI.Print("Power",0,0,0,1,90+(ui.LOADING_MASK:getWidth()/2),mySystem.HAUTEUR - (ui.LOADING_MASK:getHeight() * 1.5),300,"center",0,0.3,0.3,0,0,0,0)
 
     ---- Affichage Reload ----
-    love.graphics.setColor(0,0,255,1)
-    love.graphics.rectangle("fill", 300, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10), (ttTimer * mySystem.LOADING_MASK:getWidth())/4, mySystem.LOADING_MASK:getHeight())
-    love.graphics.setColor(255,255,255,1)
-    love.graphics.draw(mySystem.LOADING_MASK, 300, mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() + 10))
-    myUI.Print("Reloading",0,0,0,1,274+(mySystem.LOADING_MASK:getWidth()/2),mySystem.HAUTEUR - (mySystem.LOADING_MASK:getHeight() * 1.5),300,"center",0,0.3,0.3,0,0,0,0)
+    love.graphics.setColor(0.4,0.4,0.5,0.8)
+    love.graphics.rectangle("fill", 300, mySystem.HAUTEUR - (ui.LOADING_MASK:getHeight() + 10), (ttTimer * ui.LOADING_MASK:getWidth())/4, ui.LOADING_MASK:getHeight())
+    love.graphics.setColor(1,1,1,1)
+    love.graphics.draw(ui.LOADING_MASK, 300, mySystem.HAUTEUR - (ui.LOADING_MASK:getHeight() + 10))
+    myUI.Print("Reloading",0,0,0,1,274+(ui.LOADING_MASK:getWidth()/2),mySystem.HAUTEUR - (ui.LOADING_MASK:getHeight() * 1.5),300,"center",0,0.3,0.3,0,0,0,0)
 
     ---- Affichage Vie ----
-    love.graphics.setColor(0,255,0,0.5)
+    love.graphics.setColor(0,1,0,0.5)
     love.graphics.rectangle("fill",tank.x-20,tank.y-40,tank.vie,7)
-    love.graphics.setColor(255,255,255,1)
+    love.graphics.setColor(1,1,1,1)
 
 
     --- DEBUG ---
-    --love.graphics.print("VALUE:"..tostring(ttTimer))
+    -- Ci-git un print()
 end
 
 --[[

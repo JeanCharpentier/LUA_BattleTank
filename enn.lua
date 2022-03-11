@@ -1,6 +1,7 @@
 ---------------Gestion des ennemis -------------
 local enn = {}
 local MAX_ENN = 6
+local MAX_SPEED = 100
 enn.ennListe = {}
 local ennImg = love.graphics.newImage("images/tank_blue.png")
 
@@ -121,7 +122,7 @@ function enn.creerEnn() -- Créer un ennemi à une position aléatoire sur la mo
     local lx = math.random(mySystem.LARGEUR/2,mySystem.LARGEUR-200)
     local ly = math.random(200, mySystem.HAUTEUR-200)
     local ennemi = {}
-    ennemi = {x=lx,y=ly,imgBase=ennImg,angle=0,speed=20,vx=0,vy=0,state=ESTATES.NONE,vie=20}
+    ennemi = {x=lx,y=ly,imgBase=ennImg,angle=0,speed=MAX_SPEED,vx=0,vy=0,state=ESTATES.NONE,vie=20}
     table.insert(enn.ennListe, ennemi)
 end
 
