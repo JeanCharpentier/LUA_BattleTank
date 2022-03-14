@@ -4,8 +4,10 @@ local MAX_ENN = 6
 local MAX_SPEED = 100
 enn.ennListe = {}
 local ennImg = love.graphics.newImage("images/tank_blue.png")
+local ennImgW = ennImg:getWidth()
+local ennImgH = ennImg:getHeight()
 
-local ESTATES = {NONE = "none", GARDE = "garde", ATTACK = "attack", CHANGEDIR = "change", APPROCHE="approche", OUTSIDE="outside"}
+local ESTATES = {NONE = "none", GARDE = "garde", ATTACK = "attack", CHANGEDIR = "change", APPROCHE="approche", OUTSIDE="outside", COLLIDE="collide"}
 
 enn.ennTirs = {}
 local imgTir = love.graphics.newImage("images/bulletRed2.png")
@@ -13,6 +15,10 @@ local imgTir = love.graphics.newImage("images/bulletRed2.png")
 ---- Timer tirs ----
 enn.tDuration = 2
 enn.tTime = 0
+
+---- Timer collisions ----
+enn.tcDuration = 1
+enn.tcTime = 0
 
 local condition = {}
 
@@ -38,8 +44,17 @@ end
  ╚═════╝ ╚═╝     ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚══════╝
 ]]
 function enn.Update(dt)
+    ---- Update Ennemis ----
     for n=#enn.ennListe,1,-1 do
         local ennemi = enn.ennListe[n]
+        for m=#enn.ennListe,1,-1 do
+            if m ~= n then -- Ne se prend pas en compte soit-même
+                local col = enn.ennListe[m]
+                if math.dist(ennemi.x, ennemi.y,col.x,col.y) <= 40 and col.state ~= ESTATES.COLLIDE then -- Si l'object "Collidé" n'est pas déjà en collision
+                    ennemi.state = ESTATES.COLLIDE
+                end
+            end
+        end
         enn.UpdateEnn(ennemi,dt)
         ennemi.x = ennemi.x + (ennemi.vx * dt)
         ennemi.y = ennemi.y + (ennemi.vy * dt)
@@ -164,7 +179,7 @@ function enn.UpdateEnn(lEnn,dt)
         end
         if enn.tTime >= enn.tDuration then
             enn.tTime = 0
-            enn.creerTir(lEnn)
+            --enn.creerTir(lEnn)
         end
     elseif lEnn.state == ESTATES.APPROCHE then
         if math.dist(lEnn.x,lEnn.y,myTank.x,myTank.y) >= 400 then
@@ -175,6 +190,17 @@ function enn.UpdateEnn(lEnn,dt)
         lEnn.angle = math.angle(lEnn.x, lEnn.y, myTank.x, myTank.y)
         lEnn.vx = lEnn.speed * math.cos(lEnn.angle)
         lEnn.vy = lEnn.speed * math.sin(lEnn.angle)
+    elseif lEnn.state == ESTATES.COLLIDE then
+        enn.tcTime = enn.tcTime + dt
+        lEnn.vx = 0
+        lEnn.vy = 0        
+        if enn.tcTime >= enn.tcDuration then
+            local angle = lEnn.angle - mySystem.PI/2
+            lEnn.vx = lEnn.speed * math.cos(angle)
+            lEnn.vy = lEnn.speed * math.sin(angle)
+            lEnn.state = ESTATES.APPROCHE
+            enn.tcTime = 0
+        end
     end
 end
 
