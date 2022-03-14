@@ -8,7 +8,7 @@ io.stdout:setvbuf("no")
 
 
 --------------------------------------------------------------------------
-
+myDebug = require("debug")
 mySystem = require("system")
 myGame = require("game")
 myTank = require("tank")
@@ -80,6 +80,13 @@ end
 function love.keypressed(key)
     if key == "space" then
         myTank.boost()
+    end
+    if key == "f5" then
+        if myDebug.ennShoots == true then
+            myDebug.ennShoots = false
+        else
+            myDebug.ennShoots = true
+        end
     end
 end
 

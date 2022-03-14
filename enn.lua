@@ -179,7 +179,10 @@ function enn.UpdateEnn(lEnn,dt)
         end
         if enn.tTime >= enn.tDuration then
             enn.tTime = 0
-            --enn.creerTir(lEnn)
+            if myDebug.ennShoots then
+                enn.creerTir(lEnn)
+            end
+            
         end
     elseif lEnn.state == ESTATES.APPROCHE then
         if math.dist(lEnn.x,lEnn.y,myTank.x,myTank.y) >= 400 then
