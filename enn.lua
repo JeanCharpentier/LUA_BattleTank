@@ -1,7 +1,7 @@
 ---------------Gestion des ennemis -------------
 local enn = {}
-local MAX_ENN = 10
-local MAX_SPEED = 100
+local max_enn = 2
+local max_speed = 100
 enn.ennListe = {}
 local ennImg = love.graphics.newImage("images/tank_blue.png")
 local ennImgW = ennImg:getWidth()
@@ -31,7 +31,7 @@ local condition = {}
 ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
 ]]
 function enn.Load()
-    for i=1,MAX_ENN,1 do
+    for i=1,max_enn,1 do
         enn.creerEnn()
     end
 end
@@ -84,9 +84,10 @@ function enn.Update(dt)
     end
     ---- Si plus d'ennemis à l'écran ---
     if #enn.ennListe == 0 and (not myMainMenu.state) then
-        mySounds.Music:stop()
-        myMainMenu.state = true
-        myMainMenu.condition = "victoire"
+        myTank.wave = myTank.wave + 1
+        max_enn = max_enn * myTank.wave
+        max_speed = 50 * myTank.wave
+        enn.Load() -- On recharge une nouvelle vague
     end
 end
 --[[    
@@ -137,7 +138,7 @@ function enn.creerEnn() -- Créer un ennemi à une position aléatoire sur la mo
     local lx = math.random(mySystem.LARGEUR/2,mySystem.LARGEUR-200)
     local ly = math.random(200, mySystem.HAUTEUR-200)
     local ennemi = {}
-    ennemi = {x=lx,y=ly,imgBase=ennImg,angle=0,speed=MAX_SPEED,vx=0,vy=0,state=ESTATES.NONE,vie=20}
+    ennemi = {x=lx,y=ly,imgBase=ennImg,angle=0,speed=max_speed,vx=0,vy=0,state=ESTATES.NONE,vie=20}
     table.insert(enn.ennListe, ennemi)
 end
 

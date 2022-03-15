@@ -65,11 +65,11 @@ function love.draw()
         myMainMenu.Draw()
     else -- Sinon on affiche le jeu
         --mySystem.Draw()
-
-        myGame.Draw()
+        myGame.Draw() -- Map
+        myUI.Draw() -- UI
+        myEnn.Draw() -- Ennemis
+        myTank.Draw() -- Tank
         
-        myEnn.Draw()
-        myTank.Draw()
     end
 end
 --[[

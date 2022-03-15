@@ -27,13 +27,12 @@ function system.Update(dt)
         system.DY = love.math.random(-csStrength,csStrength)
         print(system.DX)
     end
-end
+end]]
 
 function system.Draw()
-    for i=0,csDuration,0.1 do
-        love.graphics.translate(system.DX,system.DY)
-    end
-end]]
+    ---- Affichage Main HUD ----
+    love.graphics.draw(ui.MAIN_HUD,0,0)
+end
 
 function system.Load()
     love.window.setMode(1280,720)

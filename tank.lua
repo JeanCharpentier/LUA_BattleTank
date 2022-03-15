@@ -1,12 +1,14 @@
 ---- Tank -----
-local tank = {}
+tank = {}
 local MAX_SPEED = 200
 local BOOST = 3
 local canBoost = true
 local isBoost = false
 local tourelle = {}
 
-tank = {x=200,y=200,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100,vie=100}
+
+tank = {x=200,y=200,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100,vie=100,score=0}
+tank.wave = 1
 
 ---- Boulets et Tirs ----
 local imgTir = {love.graphics.newImage("images/bulletsDouble.png"),love.graphics.newImage("images/bulletRed2.png"),love.graphics.newImage("images/bulletDark3.png")}
@@ -186,6 +188,7 @@ function tank.Update(dt)
                     end
                     table.remove(ennemis, n)
                     table.remove(tank.tirs, i)
+                    tank.score = tank.score + (10 * tank.wave)
                 end
             end
         end
@@ -286,10 +289,6 @@ function tank.Draw()
         local imgExplo = EXPLOSPRITES[tank.explos[i].frames]
         love.graphics.draw(imgExplo, tank.explos[i].x, tank.explos[i].y,tank.explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
     end
-
-    ---- Affichage Main HUD ----
-    love.graphics.draw(ui.MAIN_HUD,0,0)
-
     ---- Affichage BOOST ----
     love.graphics.setColor(0,1,0,0.8)
     love.graphics.rectangle("fill", 100, mySystem.HAUTEUR - (ui.LOADING_MASK:getHeight() + 10), (tank.power * ui.LOADING_MASK:getWidth()) / 100, ui.LOADING_MASK:getHeight())
