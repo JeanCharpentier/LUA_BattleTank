@@ -18,7 +18,7 @@ mainmenu.condition = nil
 ]]
 function mainmenu.Load()
 
-    table.insert(buttons, mainmenu.addButton("Sounds"))
+    table.insert(buttons, mainmenu.addButton("Play"))
     table.insert(buttons, mainmenu.addButton("Quit"))
 
     for i=1,#buttons,1 do -- Alignement des boutons
@@ -73,7 +73,8 @@ end
 ]]
 function mainmenu.Draw()
     if mainmenu.condition ~= nil then
-        love.graphics.printf(mainmenu.condition,mySystem.LARGEUR/2,100,400,"center")
+        ui.Print(mainmenu.condition,1,0,0,1,mySystem.LARGEUR/2,45,300,"center",0,1,1,150,0)
+        ui.Print(myTank.score,1,0.8,0.8,1,mySystem.LARGEUR/2,90,300,"center",0,1,1,150,0)
     end
     
     for i=1,#buttons,1 do

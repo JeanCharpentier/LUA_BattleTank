@@ -91,7 +91,7 @@ end
 ]]
 function Game.Draw()
 
-    ----- Affichge Map ------
+    ----- Affichage Map ------
     local c,l
 
     for l=1,mySystem.MAP_HEIGHT,1 do
