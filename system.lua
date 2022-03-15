@@ -11,6 +11,8 @@ system.MAP_HEIGHT = 11
 system.TILE_WIDTH = 64
 system.TILE_HEIGHT = 64
 
+system.EMPTY_RATE = 20
+
 
 --[[---- Camera Shake ----
 local csStrength = 10

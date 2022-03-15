@@ -53,6 +53,7 @@ function mainmenu.Update(dt)
                     mySounds.Music:setLooping(true)
                     mySounds.Music:play()
                     myEnn.Load() -- Création d'une nouvelle table d'ennemis
+                    myGame.Load()
                 elseif i == 2 then
                     local quit = love.event.quit() -- Quitte le jeu
                 end

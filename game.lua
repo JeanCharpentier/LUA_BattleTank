@@ -18,20 +18,6 @@ Game.Map =  {
     }
 
 Game.colMap = {}
-Game.colMap =  {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 1, 3, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 2, 0, 0, 0, 1},
-        {1, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 4, 0, 0, 1},
-        {1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 3, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1},
-        {1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 0, 0, 0, 1},
-        {1, 2, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 3, 3, 3, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-    }
-
 Game.Tilesheet = nil
 Game.TileTextures = {} --Tableau des textures
 
@@ -69,6 +55,19 @@ function Game.Load()
         love.graphics.newImage("images/obs/crateWood.png"),
         love.graphics.newImage("images/obs/treeBrown_large.png")
     }
+
+    ---- Randomisation simple du décor ----
+    for l=1,mySystem.MAP_HEIGHT,1 do
+        Game.colMap[l] = {}
+        for c=1,mySystem.MAP_WIDTH,1 do
+            local decor = love.math.random(mySystem.EMPTY_RATE)
+            if decor > 4 then
+                decor = 0
+            end
+            Game.colMap[l][c] = decor
+        end
+    end
+
 end
 --[[
 ██╗   ██╗██████╗ ██████╗  █████╗ ████████╗███████╗
@@ -126,7 +125,6 @@ function Game.Draw()
     local lig = math.floor(y / mySystem.TILE_HEIGHT) + 1
     if col>0 and col<=mySystem.MAP_WIDTH and lig>0 and lig<=mySystem.MAP_HEIGHT then
         local id = Game.Map[lig][col]
-        --love.graphics.print("ID:"..tostring(id),10,10)
     end
 end
 
