@@ -11,6 +11,30 @@ system.MAP_HEIGHT = 11
 system.TILE_WIDTH = 64
 system.TILE_HEIGHT = 64
 
+
+--[[---- Camera Shake ----
+local csStrength = 10
+local csDuration = 0.5
+local csTime = 0
+system.DX = 0
+system.DY = 0
+system.CS = false
+
+function system.Update(dt)
+    print("shaking")
+    for i=0,csDuration,(dt*5) do
+        system.DX = love.math.random(-csStrength,csStrength)
+        system.DY = love.math.random(-csStrength,csStrength)
+        print(system.DX)
+    end
+end
+
+function system.Draw()
+    for i=0,csDuration,0.1 do
+        love.graphics.translate(system.DX,system.DY)
+    end
+end]]
+
 function system.Load()
     love.window.setMode(1280,720)
 

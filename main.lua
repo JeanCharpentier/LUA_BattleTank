@@ -45,6 +45,7 @@ function love.update(dt)
     if myMainMenu.state then -- Si le menu est activé on l'update
         myMainMenu.Update(dt)
     else -- Sinon on update la boucle de jeu
+        --mySystem.Update(dt)
         myGame.Update(dt)
         myTank.Update(dt)
         myEnn.Update(dt)
@@ -63,6 +64,8 @@ function love.draw()
     if myMainMenu.state then -- Si le menu est activé on l'affiche
         myMainMenu.Draw()
     else -- Sinon on affiche le jeu
+        --mySystem.Draw()
+
         myGame.Draw()
         
         myEnn.Draw()
@@ -81,12 +84,24 @@ function love.keypressed(key)
     if key == "space" then
         myTank.boost()
     end
-    if key == "f5" then
+    if key == "f9" then -- Toogle tirs des ennemis
         if myDebug.ennShoots == true then
             myDebug.ennShoots = false
         else
             myDebug.ennShoots = true
         end
+    end
+    if key == "f10" then
+        if myDebug.mute == true then
+            myDebug.mute = false
+            love.audio.setVolume(1)
+        else
+            myDebug.mute = true
+            love.audio.setVolume(0)
+        end
+    end
+    if key == "f11" then
+        myEnn.Load()
     end
 end
 

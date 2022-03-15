@@ -19,7 +19,6 @@ mainmenu.condition = nil
 function mainmenu.Load()
 
     table.insert(buttons, mainmenu.addButton("Sounds"))
-    table.insert(buttons, mainmenu.addButton("Silence"))
     table.insert(buttons, mainmenu.addButton("Quit"))
 
     for i=1,#buttons,1 do -- Alignement des boutons
@@ -50,19 +49,11 @@ function mainmenu.Update(dt)
                     if mainmenu.condition ~= nil then
                         mySystem.resetGame()
                     end
-                    mainmenu.state = false -- Lance le jeu si bouton Sounds (jeu avec son)
-                    love.audio.setVolume(1)
+                    mainmenu.state = false -- Lance le jeu
                     mySounds.Music:setLooping(true)
                     mySounds.Music:play()
                     myEnn.Load() -- Création d'une nouvelle table d'ennemis
                 elseif i == 2 then
-                    if mainmenu.condition ~= nil then
-                        mySystem.resetGame()
-                    end
-                    mainmenu.state = false -- Lance le jeu si bouton Silence (jeu sans son)
-                    love.audio.setVolume(0)
-                    myEnn.Load() -- Création d'une nouvelle table d'ennemis
-                elseif i == 3 then
                     local quit = love.event.quit() -- Quitte le jeu
                 end
             end

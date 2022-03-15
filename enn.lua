@@ -1,6 +1,6 @@
 ---------------Gestion des ennemis -------------
 local enn = {}
-local MAX_ENN = 6
+local MAX_ENN = 10
 local MAX_SPEED = 100
 enn.ennListe = {}
 local ennImg = love.graphics.newImage("images/tank_blue.png")
@@ -13,7 +13,7 @@ enn.ennTirs = {}
 local imgTir = love.graphics.newImage("images/bulletRed2.png")
 
 ---- Timer tirs ----
-enn.tDuration = 2
+enn.tDuration = 5
 enn.tTime = 0
 
 ---- Timer collisions ----
