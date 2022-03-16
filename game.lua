@@ -97,7 +97,6 @@ function Game.Draw()
         for c=1,mySystem.MAP_WIDTH,1 do
             local id = Game.Map[l][c]
             local texQuad = Game.TileTextures[id]
-
             if texQuad ~= nil then
                 love.graphics.draw(Game.Tilesheet,texQuad,(c-1)*mySystem.TILE_WIDTH,(l-1)*mySystem.TILE_HEIGHT)
             end
