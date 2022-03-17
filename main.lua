@@ -62,6 +62,7 @@ end
 function love.draw()
     love.graphics.setFont(ui.DEFAULT_FONT)
     if myMainMenu.state then -- Si le menu est activé on l'affiche
+        love.graphics.draw(ui.CONTROLLES,0,0)
         myMainMenu.Draw()
     else -- Sinon on affiche le jeu
         --mySystem.Draw()
@@ -102,6 +103,16 @@ function love.keypressed(key)
     end
     if key == "f11" then
         myEnn.Load()
+    end
+
+    if key == "tab" then
+        ui.showControl = true
+    end
+end
+
+function love.keyreleased(key)
+    if key == "tab" then
+        ui.showControl = false
     end
 end
 

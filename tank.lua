@@ -80,14 +80,15 @@ function tank.Update(dt)
     mouseX,mouseY = love.mouse.getPosition()
     tourelle.angle = math.atan2(mouseY - tank.y, mouseX - tank.x) -- Angle de la tourelle vers le curseur de la souris
 
-    ---- Clavier ----
+    ---- Vecteurs de direction ----
     local vx = tank.s * math.cos(tank.angle)
     local vy = tank.s * math.sin(tank.angle)
 
+    ---- Valeurs tampon Bordures ----
     local tx = tank.x
     local ty = tank.y
-
     
+    ---- Clavier ----
     if love.keyboard.isDown("s") then
         tank.x = tank.x - (vx * dt)
         tank.y = tank.y - (vy * dt)
@@ -102,10 +103,11 @@ function tank.Update(dt)
     if love.keyboard.isDown("d") then
         tank.angle = tank.angle + (1 * dt)
     end
-    if (tank.y > mySystem.HAUTEUR) or (tank.y < 0) then -- Devrait empecher le tank de sortir de la map
+    ---- Collisions bordures de map
+    if (tank.y > mySystem.HAUTEUR) or (tank.y < 0) then
         tank.y = ty
     end
-    if (tank.x > mySystem.LARGEUR) or (tank.x < 0) then -- Devrait empecher le tank de sortir de la map
+    if (tank.x > mySystem.LARGEUR) or (tank.x < 0) then
         tank.x = tx
     end
     
