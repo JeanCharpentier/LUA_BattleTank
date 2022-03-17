@@ -29,16 +29,6 @@ local ttFireRate = 4
 local ttTimer = 0
 local ttCanShoot = true
 
----- Explosions ----
-tank.explos = {}
-local EXPLOSPRITES = {
-    love.graphics.newImage("images/explo/explosion1.png"),
-    love.graphics.newImage("images/explo/explosion2.png"),
-    love.graphics.newImage("images/explo/explosion3.png"),
-    love.graphics.newImage("images/explo/explosion4.png"),
-    love.graphics.newImage("images/explo/explosion5.png")
-}
-
 ---- Curseur Souris ----
 local mouseX = 0
 local mouseY = 0
@@ -184,14 +174,14 @@ function tank.Update(dt)
         for n=#ennemis,1,-1 do
             local monEnnemi = ennemis[n]
             if math.dist(monBoulet.x, monBoulet.y, monEnnemi.x, monEnnemi.y) < (monEnnemi.imgBase:getWidth()/2) then
-                table.insert(tank.explos,mySystem.Explosion(monBoulet.x,monBoulet.y))
-                if (monEnnemi.vie - monBoulet.degats) > 0 then
+                table.insert(mySystem.explos,mySystem.Explosion(monBoulet.x,monBoulet.y))
+                if (monEnnemi.vie - monBoulet.degats) > 0 then -- Perte de vie ennemi
                     monEnnemi.vie = monEnnemi.vie - monBoulet.degats
                     table.remove(tank.tirs, i)
                     if monBoulet.type == 2 then
                         tank.spray(monBoulet)
                     end
-                else
+                else -- Destruction ennemi
                     if monBoulet.type == 2 then
                         tank.spray(monBoulet)
                     end
@@ -222,7 +212,7 @@ function tank.Update(dt)
             if id ~= 0 and id ~= 1 then -- Si on touche un arbre ou une caisse, on la détruit
                 if mySystem.CheckCollisions(tank.x-20,tank.y-20,40,40,tx-20,ty-20,40,40) then
                     myGame.colMap[cl][cc] = 0
-                    table.insert(tank.explos, mySystem.Explosion(tx, ty))
+                    table.insert(mySystem.explos, mySystem.Explosion(tx, ty))
                 end
             end
             if id == 1 then -- Si on touche une barriquade, on ralentit
@@ -249,14 +239,14 @@ function tank.Update(dt)
  #    #  ####    #   #    # ######  ####  
     ]]
     ---- Animations Explosions ----
-    for n=#tank.explos,1,-1 do
-        local frame = tank.explos[n].frames
-        local myTime = tank.explos[n].time + (10 * dt)
-        tank.explos[n].time = myTime
-        if tank.explos[n].time <= #EXPLOSPRITES then
-            tank.explos[n].frames = math.floor(tank.explos[n].time)
+    for n=#mySystem.explos,1,-1 do
+        local frame = mySystem.explos[n].frames
+        local myTime = mySystem.explos[n].time + (10 * dt)
+        mySystem.explos[n].time = myTime
+        if mySystem.explos[n].time <= #mySystem.EXPLOSPRITES then
+            mySystem.explos[n].frames = math.floor(mySystem.explos[n].time)
         else
-            table.remove(tank.explos,n)
+            table.remove(mySystem.explos,n)
         end
     end
 
@@ -294,9 +284,9 @@ function tank.Draw()
     love.graphics.draw(tourelle.imgBase,tank.x,tank.y,tourelle.angle,1,1,tourelle.imgBase:getWidth()/5,tourelle.imgBase:getHeight()/2) -- Affichage Tourelle
     
     ---- Affichage Explosions ----
-    for i=1,#tank.explos,1 do
-        local imgExplo = EXPLOSPRITES[tank.explos[i].frames]
-        love.graphics.draw(imgExplo, tank.explos[i].x, tank.explos[i].y,tank.explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
+    for i=1,#mySystem.explos,1 do
+        local imgExplo = mySystem.EXPLOSPRITES[mySystem.explos[i].frames]
+        love.graphics.draw(imgExplo, mySystem.explos[i].x, mySystem.explos[i].y,mySystem.explos[i].angle,1,1,imgExplo:getWidth()/2,imgExplo:getHeight()/2)
     end
     ---- Affichage BOOST ----
     love.graphics.setColor(0,1,0,0.8)

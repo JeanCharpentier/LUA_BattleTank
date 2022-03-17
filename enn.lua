@@ -69,6 +69,7 @@ function enn.Update(dt)
         elseif math.dist(monBoulet.x, monBoulet.y, myTank.x, myTank.y) < 30 then -- Collision Tank
             if myTank.vie > 10 then
                 myTank.vie = myTank.vie - 10
+                table.insert(mySystem.explos, mySystem.Explosion(monBoulet.x, monBoulet.y))
             else
                 mySounds.Music:stop()
                 myMainMenu.state = true

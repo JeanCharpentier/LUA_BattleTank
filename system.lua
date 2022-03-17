@@ -13,23 +13,14 @@ system.TILE_HEIGHT = 64
 
 system.EMPTY_RATE = 20
 
-
---[[---- Camera Shake ----
-local csStrength = 10
-local csDuration = 0.5
-local csTime = 0
-system.DX = 0
-system.DY = 0
-system.CS = false
-
-function system.Update(dt)
-    print("shaking")
-    for i=0,csDuration,(dt*5) do
-        system.DX = love.math.random(-csStrength,csStrength)
-        system.DY = love.math.random(-csStrength,csStrength)
-        print(system.DX)
-    end
-end]]
+system.explos = {}
+system.EXPLOSPRITES = {
+    love.graphics.newImage("images/explo/explosion1.png"),
+    love.graphics.newImage("images/explo/explosion2.png"),
+    love.graphics.newImage("images/explo/explosion3.png"),
+    love.graphics.newImage("images/explo/explosion4.png"),
+    love.graphics.newImage("images/explo/explosion5.png")
+}
 
 function system.Draw()
     ---- Affichage Main HUD ----
