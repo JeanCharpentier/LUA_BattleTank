@@ -4,8 +4,6 @@ local max_enn = 2
 local max_speed = 100
 enn.ennListe = {}
 local ennImg = love.graphics.newImage("images/tank_blue.png")
-local ennImgW = ennImg:getWidth()
-local ennImgH = ennImg:getHeight()
 
 local ESTATES = {NONE = "none", GARDE = "garde", ATTACK = "attack", CHANGEDIR = "change", APPROCHE="approche", OUTSIDE="outside", COLLIDE="collide"}
 
@@ -85,9 +83,9 @@ function enn.Update(dt)
     end
     ---- Si plus d'ennemis à l'écran ---
     if #enn.ennListe == 0 and (not myMainMenu.state) then
-        myTank.wave = myTank.wave + 1
-        max_enn = max_enn * myTank.wave
-        max_speed = 50 * myTank.wave
+        myGame.wave = myGame.wave + 1
+        max_enn = max_enn * myGame.wave
+        max_speed = 50 * myGame.wave
         enn.Load() -- On recharge une nouvelle vague
     end
 end

@@ -1,5 +1,7 @@
 Game = {}
 
+
+Game.wave = 1
 ---- Maps ----
 
 Game.Map = {}

@@ -8,7 +8,7 @@ local tourelle = {}
 
 
 tank = {x=200,y=200,angle=0,imgBase=love.graphics.newImage("images/tank_darkLarge.png"),vx=0,vy=0,s=MAX_SPEED,power=100,vie=100,score=0}
-tank.wave = 1
+--tank.wave = 1
 
 ---- Boulets et Tirs ----
 local imgTir = {love.graphics.newImage("images/bulletsDouble.png"),love.graphics.newImage("images/bulletRed2.png"),love.graphics.newImage("images/bulletDark3.png")}
@@ -188,7 +188,7 @@ function tank.Update(dt)
                     myLoot.addLoot(monEnnemi.x,monEnnemi.y)
                     table.remove(ennemis, n)
                     table.remove(tank.tirs, i)
-                    tank.score = tank.score + (10 * tank.wave)
+                    tank.score = tank.score + (10 * myGame.wave)
                 end
             end
         end
@@ -206,8 +206,6 @@ function tank.Update(dt)
     for cl=1,mySystem.MAP_HEIGHT,1 do
         for cc=1,mySystem.MAP_WIDTH,1 do
             local id = myGame.colMap[cl][cc]
-            local vx = tank.s * math.cos(tank.angle)
-            local vy = tank.s * math.sin(tank.angle)
             local tx = (cc-1)*mySystem.TILE_WIDTH -- Position selon la taille de la tuile et son emplacement dans la grille
             local ty = (cl-1)*mySystem.TILE_HEIGHT
             if id ~= 0 and id ~= 1 then -- Si on touche un arbre ou une caisse, on la détruit
@@ -240,8 +238,7 @@ function tank.Update(dt)
  #    #  ####    #   #    # ######  ####  
     ]]
     ---- Animations Explosions ----
-    for n=#mySystem.explos,1,-1 do
-        local frame = mySystem.explos[n].frames
+    for n=#mySystem.explos,1,-1 do  
         local myTime = mySystem.explos[n].time + (10 * dt)
         mySystem.explos[n].time = myTime
         if mySystem.explos[n].time <= #mySystem.EXPLOSPRITES then
@@ -269,9 +266,9 @@ function tank.Update(dt)
     ---- Loots ----
     if myLoot.liste ~= nil then
         for n=#myLoot.liste,1,-1 do
-            if 10 > math.dist(tank.x,tank.y,myLoot.liste[n].x,myLoot.liste[n].y) then
+            if myLoot.Img:getHeight() > math.dist(tank.x,tank.y,myLoot.liste[n].x,myLoot.liste[n].y) then
+                tank.score = tank.score + myLoot.liste[n].points
                 table.remove(myLoot.liste,n)
-                print("remove loot")
             end
         end
     end
