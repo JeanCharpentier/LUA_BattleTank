@@ -16,6 +16,7 @@ myEnn = require("enn")
 myMainMenu = require("mainmenu")
 myUI = require("ui")
 mySounds = require("sounds")
+myLoot = require("loot")
 
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
@@ -65,11 +66,12 @@ function love.draw()
         love.graphics.draw(ui.CONTROLLES,0,0)
         myMainMenu.Draw()
     else -- Sinon on affiche le jeu
-        --mySystem.Draw()
+        mySystem.Draw()
         myGame.Draw() -- Map
         myUI.Draw() -- UI
         myEnn.Draw() -- Ennemis
         myTank.Draw() -- Tank
+        myLoot.Draw()
         
     end
 end

@@ -15,13 +15,13 @@ local imgTir = {love.graphics.newImage("images/bulletsDouble.png"),love.graphics
 tank.tirs = {}
 
 ---- Timer mitrailleuse ----
-local tmFireRate = 0.2
-local tmTimer = 0
 local TMSTATES = {SINGLE="single",BURST="burst",FULL="full",ENDBURST="endburst"}
-tank.state = TMSTATES.SINGLE
 local nbTirs = 3
+tank.state = TMSTATES.SINGLE
 
-local tbFireRate = 0.1
+local tmFireRate = 0.2 -- Fullauto
+local tmTimer = 0
+local tbFireRate = 0.1 -- Burst
 local tbTimer = 1
 
 ---- Timer Tourelle ---
@@ -185,6 +185,7 @@ function tank.Update(dt)
                     if monBoulet.type == 2 then
                         tank.spray(monBoulet)
                     end
+                    myLoot.addLoot(monEnnemi.x,monEnnemi.y)
                     table.remove(ennemis, n)
                     table.remove(tank.tirs, i)
                     tank.score = tank.score + (10 * tank.wave)
@@ -263,6 +264,16 @@ function tank.Update(dt)
     end
     if tank.power >= 100 then
         canBoost = true
+    end
+
+    ---- Loots ----
+    if myLoot.liste ~= nil then
+        for n=#myLoot.liste,1,-1 do
+            if 10 > math.dist(tank.x,tank.y,myLoot.liste[n].x,myLoot.liste[n].y) then
+                table.remove(myLoot.liste,n)
+                print("remove loot")
+            end
+        end
     end
 end
 
