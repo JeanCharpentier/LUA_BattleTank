@@ -2,13 +2,13 @@
 local enn = {}
 local max_enn = 2
 local max_speed = 100
-enn.ennListe = {}
 local ennImg = love.graphics.newImage("images/tank_blue.png")
+enn.ennListe = {}
 
 local ESTATES = {NONE = "none", GARDE = "garde", ATTACK = "attack", CHANGEDIR = "change", APPROCHE="approche", OUTSIDE="outside", COLLIDE="collide"}
 
-enn.ennTirs = {}
 local imgTir = love.graphics.newImage("images/bulletRed2.png")
+enn.ennTirs = {}
 
 ---- Timer tirs ----
 enn.tDuration = 5
@@ -17,8 +17,6 @@ enn.tTime = 0
 ---- Timer collisions ----
 enn.tcDuration = 1
 enn.tcTime = 0
-
-local condition = {}
 
 --[[
 ██╗      ██████╗  █████╗ ██████╗ 
@@ -179,7 +177,7 @@ function enn.UpdateEnn(lEnn,dt)
         end
         if enn.tTime >= enn.tDuration then
             enn.tTime = 0
-            if myDebug.ennShoots then
+            if myDeb.ennShoots then
                 enn.creerTir(lEnn)
             end
             

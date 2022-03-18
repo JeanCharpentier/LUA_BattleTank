@@ -4,10 +4,9 @@
     F11 : Spawn une nouvelle vague d'ennemis
 ]]
 
+deb = {}
 
-debug = {}
+deb.ennShoots = false
+deb.mute = false
 
-debug.ennShoots = false
-debug.mute = false
-
-return debug
+return deb

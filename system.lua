@@ -93,11 +93,14 @@ function system.resetGame()
     myTank.angle = 0
     myTank.vx = 0
     myTank.vy = 0
+    myTank.score = 0
+    myGame.wave = 1
+    
     for n=#myTank.tirs,1,-1 do
         table.remove(myTank.tirs,n)
     end
-    for n=#myTank.explos,1,-1 do
-        table.remove(myTank.explos,n)
+    for n=#system.explos,1,-1 do
+        table.remove(system.explos,n)
     end
     -- Reset ennemis et leurs tirs en cours
     for n=#myEnn.ennTirs,1,-1 do

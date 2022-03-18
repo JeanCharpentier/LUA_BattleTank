@@ -8,7 +8,7 @@ io.stdout:setvbuf("no")
 
 
 --------------------------------------------------------------------------
-myDebug = require("debug")
+myDeb = require("debug")
 mySystem = require("system")
 myGame = require("game")
 myTank = require("tank")
@@ -27,8 +27,10 @@ myLoot = require("loot")
 ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
 ]]
 function love.load()
-    
     mySystem.Load()
+    
+    myDeb.ennShoots = true
+    myDeb.mute = false
 
     myMainMenu.Load()
     myGame.Load()
@@ -88,18 +90,18 @@ function love.keypressed(key)
         myTank.boost()
     end
     if key == "f9" then -- Toogle tirs des ennemis
-        if myDebug.ennShoots == true then
-            myDebug.ennShoots = false
+        if myDeb.ennShoots == true then
+            myDeb.ennShoots = false
         else
-            myDebug.ennShoots = true
+            myDeb.ennShoots = true
         end
     end
     if key == "f10" then
-        if myDebug.mute == true then
-            myDebug.mute = false
+        if myDeb.mute == true then
+            myDeb.mute = false
             love.audio.setVolume(1)
         else
-            myDebug.mute = true
+            myDeb.mute = true
             love.audio.setVolume(0)
         end
     end
