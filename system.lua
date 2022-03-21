@@ -94,8 +94,14 @@ function system.resetGame()
     myTank.vx = 0
     myTank.vy = 0
     myTank.score = 0
+
     myGame.wave = 1
-    
+
+    myLoot.liste = {}
+
+    myEnn.maxEnn = 2
+    myEnn.maxSpeed = 100
+
     for n=#myTank.tirs,1,-1 do
         table.remove(myTank.tirs,n)
     end
