@@ -1,7 +1,7 @@
 ---------------Gestion des ennemis -------------
 local enn = {}
-local max_enn = 2
-local max_speed = 100
+local maxEnn = 2
+local maxSpeed = 100
 local ennImg = love.graphics.newImage("images/tank_blue.png")
 enn.ennListe = {}
 
@@ -27,7 +27,7 @@ enn.tcTime = 0
 ╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚═════╝ 
 ]]
 function enn.Load()
-    for i=1,max_enn,1 do
+    for i=1,maxEnn,1 do
         enn.creerEnn()
     end
 end
@@ -82,8 +82,8 @@ function enn.Update(dt)
     ---- Si plus d'ennemis à l'écran ---
     if #enn.ennListe == 0 and (not myMainMenu.state) then
         myGame.wave = myGame.wave + 1
-        max_enn = max_enn * myGame.wave
-        max_speed = 50 * myGame.wave
+        maxEnn = maxEnn * myGame.wave
+        maxSpeed = 50 * myGame.wave
         enn.Load() -- On recharge une nouvelle vague
     end
 end
@@ -135,7 +135,7 @@ function enn.creerEnn() -- Créer un ennemi à une position aléatoire sur la mo
     local lx = math.random(mySystem.LARGEUR/2,mySystem.LARGEUR-200)
     local ly = math.random(200, mySystem.HAUTEUR-200)
     local ennemi = {}
-    ennemi = {x=lx,y=ly,imgBase=ennImg,angle=0,speed=max_speed,vx=0,vy=0,state=ESTATES.NONE,vie=20}
+    ennemi = {x=lx,y=ly,imgBase=ennImg,angle=0,speed=maxSpeed,vx=0,vy=0,state=ESTATES.NONE,vie=20}
     table.insert(enn.ennListe, ennemi)
 end
 
@@ -179,8 +179,7 @@ function enn.UpdateEnn(lEnn,dt)
             enn.tTime = 0
             if myDeb.ennShoots then
                 enn.creerTir(lEnn)
-            end
-            
+            end      
         end
     elseif lEnn.state == ESTATES.APPROCHE then
         if math.dist(lEnn.x,lEnn.y,myTank.x,myTank.y) >= 400 then
