@@ -11,7 +11,7 @@ io.stdout:setvbuf("no")
 myDeb = require("debug")
 mySystem = require("system")
 myGame = require("game")
-myTank = require("tank")
+myTank = require("tank") -- Passer en local et bosser les boucles de dépendances
 myEnn = require("enn")
 myMainMenu = require("mainmenu")
 myUI = require("ui")

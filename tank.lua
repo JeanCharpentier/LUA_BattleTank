@@ -1,5 +1,5 @@
 ---- Tank -----
-tank = {}
+local tank = {}
 local MAX_SPEED = 200
 local BOOST = 3
 local canBoost = true

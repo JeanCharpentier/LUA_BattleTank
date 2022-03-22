@@ -19,6 +19,7 @@ mainmenu.condition = nil
 function mainmenu.Load()
 
     table.insert(buttons, mainmenu.addButton("Play"))
+    table.insert(buttons, mainmenu.addButton("Options"))
     table.insert(buttons, mainmenu.addButton("Quit"))
 
     for i=1,#buttons,1 do -- Alignement des boutons
@@ -44,7 +45,7 @@ function mainmenu.Update(dt)
         local btn = buttons[i]
        if (mouseX >= btn.x) and (mouseX <= btn.x+btn.imgBase:getWidth()) and (mouseY >= btn.y) and (mouseY <= btn.y+btn.imgBase:getHeight()) then
             buttons[i].imgBase = btnFrames[2]
-            if love.mouse.isDown(1) then
+            if love.mouse.isDown(1) then -- /!\ Mémoriser précédent état pour un seul call
                 if i == 1 then
                     if mainmenu.condition ~= nil then
                         mySystem.resetGame()
@@ -55,6 +56,8 @@ function mainmenu.Update(dt)
                     myEnn.Load() -- Création d'une nouvelle table d'ennemis
                     myGame.Load()
                 elseif i == 2 then
+                    print("options") -- Quitte le jeu
+                elseif i == 3 then
                     local quit = love.event.quit() -- Quitte le jeu
                 end
             end
