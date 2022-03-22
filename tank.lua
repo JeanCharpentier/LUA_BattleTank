@@ -21,7 +21,7 @@ tank.state = TMSTATES.SINGLE
 
 local tmFireRate = 0.2 -- Fullauto
 local tmTimer = 0
-local tbFireRate = 0.1 -- Burst
+local tbFireRate = 1 -- Burst
 local tbTimer = 1
 
 ---- Timer Tourelle ---
@@ -330,11 +330,11 @@ end
 ]]
 
 function tank.mStates(dt) -- States Machine Mitrailleuse
-    if love.keyboard.isDown("f1") then
+    if love.keyboard.isDown("1") then
         tank.state = TMSTATES.SINGLE
-    elseif love.keyboard.isDown("f2") then
+    elseif love.keyboard.isDown("2") then
         tank.state = TMSTATES.BURST
-    elseif love.keyboard.isDown("f3") then
+    elseif love.keyboard.isDown("3") then
         tank.state = TMSTATES.FULL
     end
     if tank.state == TMSTATES.ENDBURST then
